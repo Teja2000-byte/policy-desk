@@ -4,10 +4,12 @@ Record your own screen and voice. Use the real Gemini-backed application after l
 
 ## Prepare before recording
 
-1. Add your own Gemini key with `python scripts/setup.py` or edit the existing private `.env`, then restart.
-2. Run `python -m scripts.ingest` to avoid cold index creation during the recording.
+The local key, policy index, and live evaluation were verified on 17 September 2026. The supplied cases scored **5/5**, and the preselected additional cases scored **12/12**, with zero errors. The existing browser verification account contains a genuine saved damage result. Use your own demo account for your recording.
+
+1. On this computer, the key is already configured. For a fresh installation, add your own key with `python scripts/setup.py`; use `--set-key` when updating an existing configuration, then restart.
+2. The local policy index already contains 12 chunks. On a fresh installation, run `python -m scripts.ingest` to prepare it before recording.
 3. Run `python run.py` if the services are not already running.
-4. Run `python -m scripts.evaluate`. Review the actual report; resolve failures before claiming completion.
+4. Review `reports/evaluation.json` and `reports/boundary-evaluation.json`. Rerun evaluation if you change the model, policies, or decision code; additional live runs consume your Gemini quota.
 5. Create your own demo account and prepare one saved damage result and one missing-information result. Keep the page on Sign in when you start.
 6. Use a browser window with readable text. Close secret files, hide notifications, and record only the application window. Keep the terminal test summary available in a second tab/window if desired.
 7. On macOS, use Shift–Command–5, choose the application/window region, and enable your microphone. Check a short audio sample first. These are preparation instructions; no recording has been created by this project.
@@ -22,7 +24,7 @@ Record your own screen and voice. Use the real Gemini-backed application after l
 | 1:00–1:20 | Open the saved missing-information example from History, or generate it if response time permits | “If necessary details are missing, the assistant asks specific questions instead of inventing an answer. Confidence is the model’s estimate, not a measured probability.” |
 | 1:20–1:45 | Show History, reopen the damage ticket, optionally show test/report summary | “Tickets and decisions are saved together in SQLite. Every history query checks the owner. Automated tests cover account isolation, token validation, persistence, retrieval, and failure handling. A separate runner evaluates actual Gemini decisions against the supplied cases.” |
 
-If you have a verified result, add one short factual sentence: “The live sample run returned **[actual correct] of [actual total]** correct.” Replace those values from the report. Otherwise omit the accuracy claim.
+You can add this verified sentence: “The live run passed all five supplied sample cases and 12 additional boundary cases.” These are small smoke-test suites, not a claim of 100% accuracy on arbitrary tickets. Update the wording if a later run produces different results.
 
 Model response times vary. If a live call takes longer than expected, explain retrieval while waiting, then shorten the final section. You may show a previously generated, genuinely saved result in History; say that it is a saved result. Do not hide a failed call by pretending that another result belongs to it.
 

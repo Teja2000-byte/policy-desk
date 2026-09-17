@@ -52,4 +52,4 @@ Sources: the supplied five-page `AI_Engineering_Intern_Take_Home_Project.pdf`, t
 
 ## Actual verification boundary
 
-Implemented does not mean live-verified. The automated engineering checks use test doubles for Gemini, while the production application always calls Gemini. See `reports/verification.md` for current counts and live-evaluation status. Before submission, configure the candidate's own API key, run the live sample cases, inspect failures, and record the working result.
+The offline engineering checks use test doubles for Gemini; the production application always calls Gemini. On 17 September 2026, real Gemini ingestion succeeded, the five supplied cases passed, and 12 preselected additional cases passed, with no service errors. A browser check generated a decision through Streamlit and reopened it from History. See `reports/verification.md` for scope and saved reports. The remaining 28 additional cases were not executed. Candidate study, the narrated recording, Drive sharing, and submission remain to be completed.

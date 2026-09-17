@@ -1,0 +1,159 @@
+{
+  "total": 12,
+  "correct": 12,
+  "incorrect": 0,
+  "errors": 0,
+  "accuracy": 1.0,
+  "results": [
+    {
+      "case_id": "E01",
+      "expected_action": "APPROVE_REFUND_OR_REPLACEMENT",
+      "actual_action": "APPROVE_REFUND_OR_REPLACEMENT",
+      "correct": true,
+      "reason": "The item was reported as physically crushed and damaged within 7 days of delivery. For damaged orders valued at ₹2,000 or less, a refund or replacement can be approved without photographic evidence.",
+      "sources": [
+        "damaged_goods.md"
+      ],
+      "policy_version": "23f5194773eefe8def3b85efb773ed2fdc01b5eda20ab61610b7fe7f15e0cc3f",
+      "latency_ms": 4846
+    },
+    {
+      "case_id": "E02",
+      "expected_action": "REQUEST_PHOTOS",
+      "actual_action": "REQUEST_PHOTOS",
+      "correct": true,
+      "reason": "The item was reported as physically damaged within 7 days of delivery. Since the order value is above ₹2,000, photographic evidence of the damaged product and packaging is required before a refund or replacement can be approved.",
+      "sources": [
+        "damaged_goods.md"
+      ],
+      "policy_version": "23f5194773eefe8def3b85efb773ed2fdc01b5eda20ab61610b7fe7f15e0cc3f",
+      "latency_ms": 4783
+    },
+    {
+      "case_id": "E03",
+      "expected_action": "REJECT_OUTSIDE_WINDOW",
+      "actual_action": "REJECT_OUTSIDE_WINDOW",
+      "correct": true,
+      "reason": "The damage was reported 8 days after delivery, which is outside the 7-calendar-day window for reporting damaged goods.",
+      "sources": [
+        "damaged_goods.md"
+      ],
+      "policy_version": "23f5194773eefe8def3b85efb773ed2fdc01b5eda20ab61610b7fe7f15e0cc3f",
+      "latency_ms": 3732
+    },
+    {
+      "case_id": "E08",
+      "expected_action": "APPROVE_REPLACEMENT",
+      "actual_action": "APPROVE_REPLACEMENT",
+      "correct": true,
+      "reason": "The customer reported a functional defect within 14 calendar days of delivery, making it eligible for replacement. The order value is ₹3,000, which does not trigger the requirement for evidence as the policy specifies 'above ₹3,000'.",
+      "sources": [
+        "defective_products.md"
+      ],
+      "policy_version": "23f5194773eefe8def3b85efb773ed2fdc01b5eda20ab61610b7fe7f15e0cc3f",
+      "latency_ms": 30609
+    },
+    {
+      "case_id": "E09",
+      "expected_action": "REQUEST_DEFECT_EVIDENCE",
+      "actual_action": "REQUEST_DEFECT_EVIDENCE",
+      "correct": true,
+      "reason": "The customer reported a functional defect within 14 days of delivery, making it eligible for replacement. Since the order value is above ₹3,000, basic evidence of the defect is required before approving a replacement.",
+      "sources": [
+        "defective_products.md"
+      ],
+      "policy_version": "23f5194773eefe8def3b85efb773ed2fdc01b5eda20ab61610b7fe7f15e0cc3f",
+      "latency_ms": 5207
+    },
+    {
+      "case_id": "E10",
+      "expected_action": "REJECT_OUTSIDE_WINDOW",
+      "actual_action": "REJECT_OUTSIDE_WINDOW",
+      "correct": true,
+      "reason": "The functional defect was reported 15 days after delivery, which is outside the 14-calendar-day window for eligibility under the standard defect policy.",
+      "sources": [
+        "defective_products.md"
+      ],
+      "policy_version": "23f5194773eefe8def3b85efb773ed2fdc01b5eda20ab61610b7fe7f15e0cc3f",
+      "latency_ms": 4007
+    },
+    {
+      "case_id": "E12",
+      "expected_action": "APPROVE_RETURN",
+      "actual_action": "APPROVE_RETURN",
+      "correct": true,
+      "reason": "The customer is requesting a change-of-mind return for an unopened non-food product within 14 calendar days of delivery, which is eligible under the returns policy.",
+      "sources": [
+        "returns.md"
+      ],
+      "policy_version": "23f5194773eefe8def3b85efb773ed2fdc01b5eda20ab61610b7fe7f15e0cc3f",
+      "latency_ms": 3860
+    },
+    {
+      "case_id": "E13",
+      "expected_action": "REJECT_OUTSIDE_WINDOW",
+      "actual_action": "REJECT_OUTSIDE_WINDOW",
+      "correct": true,
+      "reason": "The customer wishes to return an unopened non-food product due to a change of mind, but the request is made 15 days after delivery, which is outside the 14-calendar-day return window for such items.",
+      "sources": [
+        "returns.md"
+      ],
+      "policy_version": "23f5194773eefe8def3b85efb773ed2fdc01b5eda20ab61610b7fe7f15e0cc3f",
+      "latency_ms": 4043
+    },
+    {
+      "case_id": "E23",
+      "expected_action": "OFFER_REPLACEMENT_OR_REFUND",
+      "actual_action": "OFFER_REPLACEMENT_OR_REFUND",
+      "correct": true,
+      "reason": "The order has not arrived 11 days after dispatch, which is more than 10 days. According to policy, a replacement or refund should be offered in this scenario.",
+      "sources": [
+        "shipping.md"
+      ],
+      "policy_version": "23f5194773eefe8def3b85efb773ed2fdc01b5eda20ab61610b7fe7f15e0cc3f",
+      "latency_ms": 4329
+    },
+    {
+      "case_id": "E26",
+      "expected_action": "REJECT_OUTSIDE_WINDOW",
+      "actual_action": "REJECT_OUTSIDE_WINDOW",
+      "correct": true,
+      "reason": "The report of receiving the wrong item was made 8 days after delivery, which is outside the 7-calendar-day window specified in the Wrong Item Policy.",
+      "sources": [
+        "wrong_item.md"
+      ],
+      "policy_version": "23f5194773eefe8def3b85efb773ed2fdc01b5eda20ab61610b7fe7f15e0cc3f",
+      "latency_ms": 4544
+    },
+    {
+      "case_id": "E29",
+      "expected_action": "CANCEL_AND_REFUND",
+      "actual_action": "CANCEL_AND_REFUND",
+      "correct": true,
+      "reason": "The customer requested to cancel the order, and the order status is 'processing', which means it has not yet been dispatched. According to policy, an order can be cancelled for a full refund before dispatch.",
+      "sources": [
+        "cancellations.md"
+      ],
+      "policy_version": "23f5194773eefe8def3b85efb773ed2fdc01b5eda20ab61610b7fe7f15e0cc3f",
+      "latency_ms": 5136
+    },
+    {
+      "case_id": "E37",
+      "expected_action": "REQUEST_PHOTOS",
+      "actual_action": "REQUEST_PHOTOS",
+      "correct": true,
+      "reason": "The customer reported a damaged order valued at ₹3,500 within 7 days of delivery. For orders valued above ₹2,000, photographic evidence of the damaged product and packaging is required before a refund or replacement can be approved.",
+      "sources": [
+        "damaged_goods.md"
+      ],
+      "policy_version": "23f5194773eefe8def3b85efb773ed2fdc01b5eda20ab61610b7fe7f15e0cc3f",
+      "latency_ms": 7686
+    }
+  ],
+  "provider": "gemini",
+  "model": "gemini-2.5-flash",
+  "embedding_model": "gemini-embedding-001",
+  "timestamp": "2026-09-17T11:15:15.226609+00:00",
+  "dataset": "boundary_smoke_cases.json",
+  "dataset_sha256": "f60d1202bc636c16aaa6a9371d13b0c696e0c783bf86265024c7e5a0d5acaae6"
+}

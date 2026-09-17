@@ -41,6 +41,8 @@ Without a Gemini key, registration, login, and empty history work; decision gene
 
 ## Verification and evaluation
 
+Verified on **17 September 2026**: **86/86 offline tests**, **5/5 supplied cases with real Gemini**, and **12/12 preselected additional boundary/adversarial cases**, with zero live service errors. The live Streamlit result and saved history were also checked in a browser. These small, visible suites are smoke tests; they do not establish accuracy on unseen tickets. See [the full verification record](reports/verification.md).
+
 ```bash
 # Offline engineering tests: no API key or paid model calls
 python -m pytest --cov=src --cov-report=term-missing
@@ -49,7 +51,10 @@ python -m ruff check .
 # Live evaluation: keep the backend running; uses your Gemini quota
 python -m scripts.evaluate
 
-# Additional policy boundaries and adversarial examples
+# The 12 preselected cases used in the recorded boundary run
+python -m scripts.evaluate --cases data/boundary_smoke_cases.json --output reports/boundary-evaluation.json --delay 20
+
+# All 40 additional cases (not all were executed in the recorded run)
 python -m scripts.evaluate --cases data/extended_test_cases.json --output reports/extended-evaluation.json
 
 # Optional diagnostic run on the 214 historical tickets

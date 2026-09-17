@@ -2,11 +2,12 @@
 
 Deadline stated in the invitation: **Sunday, 20 September 2026**. No cutoff time or timezone was provided; submit with a comfortable margin.
 
-## Required remaining personal steps
+## Progress and remaining personal steps
 
-- [ ] Configure your own Gemini API key locally and restart the backend.
-- [ ] Run the real Gemini sample evaluation; inspect the results, fix any failures, and preserve the actual report.
-- [ ] Run additional boundary cases that matter most; do not present unexecuted cases as passing.
+- [x] Configure your own Gemini API key locally and restart the backend.
+- [x] Run the real Gemini sample evaluation: **5/5 correct**, zero errors; saved in `reports/evaluation.json`.
+- [x] Run preselected additional boundaries: **12/12 correct**, zero errors; saved in `reports/boundary-evaluation.json`. The other 28 additional cases were not run.
+- [x] Generate a real result in Streamlit and reopen it from History.
 - [ ] Read the study guide and explain the code without relying on memorized text.
 - [ ] Record your own under-two-minute narrated screen demonstration.
 - [ ] Upload the recording to Google Drive and verify the shareable viewer link.

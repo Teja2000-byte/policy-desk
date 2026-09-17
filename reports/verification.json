@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-17T09:46:28.079414+00:00",
+  "checked_at": "2026-09-17T11:18:59.448907+00:00",
   "python": "3.12.14",
   "platform": "Darwin",
   "offline_tests": {
@@ -10,12 +10,55 @@
     "src_statement_coverage_percent": 98.91
   },
   "live_gemini_evaluation": {
-    "status": "NOT_RUN",
-    "reason": "Candidate Gemini API key not configured. The evaluator preflight was executed and correctly stopped; no live accuracy is claimed."
+    "status": "PASSED",
+    "report": "reports/evaluation.json",
+    "total": 5,
+    "correct": 5,
+    "incorrect": 0,
+    "errors": 0,
+    "accuracy": 1.0,
+    "model": "gemini-2.5-flash",
+    "embedding_model": "gemini-embedding-001",
+    "timestamp": "2026-09-17T11:08:37.165608+00:00",
+    "dataset": "sample_test_cases.json",
+    "dataset_sha256": "d6f9e2f8d5e843b40699242825e5fedd7db47e8e4b19e65beee9f243f38f476a"
   },
   "original_pack_integrity": "All six policies, tickets.csv, sample_test_cases.json and DATA_NOTES.md match byte-for-byte.",
   "recording": {
     "status": "PENDING_CANDIDATE_RECORDING",
     "script": "docs/DEMO_SCRIPT.md"
+  },
+  "live_boundary_evaluation": {
+    "status": "PASSED",
+    "report": "reports/boundary-evaluation.json",
+    "total": 12,
+    "correct": 12,
+    "incorrect": 0,
+    "errors": 0,
+    "accuracy": 1.0,
+    "model": "gemini-2.5-flash",
+    "embedding_model": "gemini-embedding-001",
+    "timestamp": "2026-09-17T11:15:15.226609+00:00",
+    "dataset": "boundary_smoke_cases.json",
+    "dataset_sha256": "f60d1202bc636c16aaa6a9371d13b0c696e0c783bf86265024c7e5a0d5acaae6"
+  },
+  "index": {
+    "policies": 6,
+    "chunks": 12,
+    "policy_version": "23f5194773eefe8def3b85efb773ed2fdc01b5eda20ab61610b7fe7f15e0cc3f"
+  },
+  "browser_live_check": {
+    "status": "PASSED",
+    "actual_action": "REQUEST_PHOTOS",
+    "generated_in_streamlit": true,
+    "policy_evidence_rendered": true,
+    "saved_result_reopened_from_history": true
+  },
+  "evaluation_scope": {
+    "additional_cases_available": 40,
+    "additional_cases_executed": 12,
+    "remaining_additional_cases_not_run": 28,
+    "historical_diagnostic_run": false,
+    "limitation": "Visible smoke suites; not an estimate of unseen-ticket accuracy."
   }
 }

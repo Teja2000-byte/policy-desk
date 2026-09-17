@@ -1,0 +1,75 @@
+{
+  "total": 5,
+  "correct": 5,
+  "incorrect": 0,
+  "errors": 0,
+  "accuracy": 1.0,
+  "results": [
+    {
+      "case_id": "S01",
+      "expected_action": "REQUEST_PHOTOS",
+      "actual_action": "REQUEST_PHOTOS",
+      "correct": true,
+      "reason": "The customer reported a damaged item within 7 days of delivery. Since the order value is ₹3,500, which is above ₹2,000, photographic evidence of the damaged product and packaging is required before a refund or replacement can be approved.",
+      "sources": [
+        "damaged_goods.md"
+      ],
+      "policy_version": "23f5194773eefe8def3b85efb773ed2fdc01b5eda20ab61610b7fe7f15e0cc3f",
+      "latency_ms": 4084
+    },
+    {
+      "case_id": "S02",
+      "expected_action": "APPROVE_RETURN",
+      "actual_action": "APPROVE_RETURN",
+      "correct": true,
+      "reason": "The customer wishes to return an unopened non-food product due to a change of mind. The product was delivered 10 days ago, which is within the 14-calendar-day return window for unopened non-food items.",
+      "sources": [
+        "returns.md"
+      ],
+      "policy_version": "23f5194773eefe8def3b85efb773ed2fdc01b5eda20ab61610b7fe7f15e0cc3f",
+      "latency_ms": 3445
+    },
+    {
+      "case_id": "S03",
+      "expected_action": "OPEN_SHIPPING_INVESTIGATION",
+      "actual_action": "OPEN_SHIPPING_INVESTIGATION",
+      "correct": true,
+      "reason": "The customer reported that their parcel has not arrived 9 days after dispatch. According to policy, if an order has not arrived 8 to 10 days after dispatch, a shipping investigation should be opened.",
+      "sources": [
+        "shipping.md"
+      ],
+      "policy_version": "23f5194773eefe8def3b85efb773ed2fdc01b5eda20ab61610b7fe7f15e0cc3f",
+      "latency_ms": 3851
+    },
+    {
+      "case_id": "S04",
+      "expected_action": "REPLACE_CORRECT_ITEM",
+      "actual_action": "REPLACE_CORRECT_ITEM",
+      "correct": true,
+      "reason": "The customer reported receiving the wrong flavor (chocolate instead of strawberry) 2 days after delivery, which is within the 7-day window for reporting wrong items. The policy states that eligible reports should receive a replacement of the correct item.",
+      "sources": [
+        "wrong_item.md"
+      ],
+      "policy_version": "23f5194773eefe8def3b85efb773ed2fdc01b5eda20ab61610b7fe7f15e0cc3f",
+      "latency_ms": 4406
+    },
+    {
+      "case_id": "S05",
+      "expected_action": "NEEDS_MORE_INFORMATION",
+      "actual_action": "NEEDS_MORE_INFORMATION",
+      "correct": true,
+      "reason": "To determine eligibility for a return, the product type, whether it has been opened, and the number of days since delivery are required as per the Returns Policy.",
+      "sources": [
+        "returns.md"
+      ],
+      "policy_version": "23f5194773eefe8def3b85efb773ed2fdc01b5eda20ab61610b7fe7f15e0cc3f",
+      "latency_ms": 6896
+    }
+  ],
+  "provider": "gemini",
+  "model": "gemini-2.5-flash",
+  "embedding_model": "gemini-embedding-001",
+  "timestamp": "2026-09-17T11:08:37.165608+00:00",
+  "dataset": "sample_test_cases.json",
+  "dataset_sha256": "d6f9e2f8d5e843b40699242825e5fedd7db47e8e4b19e65beee9f243f38f476a"
+}
