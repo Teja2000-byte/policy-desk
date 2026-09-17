@@ -6,6 +6,8 @@
 
 Streamlit → HTTP → FastAPI → local retrieval → Gemini → validated decision → SQLite.
 
+**[Watch the narrated demo · 1:53](https://drive.google.com/file/d/1bqWFzBvWQtodxOo7bRhPpgmZ9RbMP87n/view?usp=sharing)**
+
 Built for the MaxsorLabs AI & Backend Engineering Internship assessment. The six supplied policy files are the source of truth. Historical ticket labels are never used to answer a new ticket. Recommendations require human review; the application does not execute refunds, replacements, or customer communications.
 
 ## Quick start
@@ -227,4 +229,4 @@ The evidence check permits whitespace-normalized exact excerpts, not arbitrary p
 
 Technical references: [Google Gen AI Python SDK](https://googleapis.github.io/python-genai/), [Gemini structured outputs](https://ai.google.dev/gemini-api/docs/structured-output), [Gemini embeddings](https://ai.google.dev/gemini-api/docs/embeddings). The implementation uses the SDK's `models.generate_content` API and validates the returned JSON independently.
 
-The narrated Streamlit demonstration accompanies the submission through Google Drive. It shows sign-in, a real generated recommendation with evidence, and saved History including a clarification result. No public application deployment is required; reviewers run the project locally with their own credentials.
+The [narrated Streamlit demonstration](https://drive.google.com/file/d/1bqWFzBvWQtodxOo7bRhPpgmZ9RbMP87n/view?usp=sharing) is available through Google Drive without signing in. It shows sign-in, a real generated recommendation with evidence, and saved History including a clarification result. No public application deployment is required; reviewers run the project locally with their own credentials.

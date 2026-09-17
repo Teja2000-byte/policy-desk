@@ -43,7 +43,7 @@ These tests use isolated provider doubles. They test engineering behavior and do
 
 The packaged source was extracted into a new folder and configured with the documented setup helper using `--no-key`. All 110 tests and Ruff passed there as well. The local checks reused the installed Python environment. GitHub Actions independently installed the pinned dependencies on a Linux runner and passed Ruff and the offline suite. Local Markdown links were checked, the ZIP matched all 64 publishable source/documentation files at this stage, and the credential scan found no current secrets or checked common credential patterns. Ignored `.env`, databases, and runtime files were absent from the source package.
 
-The [public repository](https://github.com/Teja2000-byte/policy-desk) returned HTTP 200 without authentication. Its published source tree and commit matched the reviewed local project. The recording's Google Drive link remains the candidate's separate delivery step.
+The [public repository](https://github.com/Teja2000-byte/policy-desk) returned HTTP 200 without authentication. Its published source tree and commit matched the reviewed local project. The [Google Drive recording](https://drive.google.com/file/d/1bqWFzBvWQtodxOo7bRhPpgmZ9RbMP87n/view?usp=sharing) is shared as anyone-with-link viewer. Its page returned HTTP 200 without authentication; the expected file name appeared without a login redirect or access-request message. The browser player displayed 1:53 and its seek timer advanced during the playback check. This verifies basic preview playback, not a new complete listening review.
 
 ## Historical results and failures
 

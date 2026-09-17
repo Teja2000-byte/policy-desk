@@ -23,17 +23,17 @@ No public deployment, slide deck, separate study-guide attachment, or API key is
 - [x] Review sampled screen frames, a local narration transcript, audio levels, and duration. A louder MP4 preserves the original screen footage; the candidate has confirmed the video is ready.
 - [x] Complete the final model/evaluation review: all five supplied cases passed on Gemini 3.5 Flash-Lite, including exact S05; 0 incorrect and 0 service errors. The approved run used 11 API requests. Actual results are in `reports/evaluation-current.json`.
 - [x] Check source/README/configuration consistency, compare all supplied files, verify the schema, scan publishable source and Git history for credentials, and validate a clean source package. Its fresh setup and all 110 offline tests passed; Ruff passed.
-- [ ] Upload the recording to Drive, set viewer access, and verify the link while signed out or in a private browser.
+- [x] Upload the [final recording](https://drive.google.com/file/d/1bqWFzBvWQtodxOo7bRhPpgmZ9RbMP87n/view?usp=sharing) to Drive. Permission metadata confirms anyone-with-link viewer access; the page returned HTTP 200 without authentication, and browser playback advanced with a displayed duration of 1:53.
 - [x] Choose a public GitHub repository as the project delivery, under the candidate's `Teja2000-byte` account. Keep the ZIP as a backup.
 - [x] Publish [Teja2000-byte/policy-desk](https://github.com/Teja2000-byte/policy-desk) and verify access without authentication. The public source tree matches the reviewed local project.
-- [ ] Confirm the candidate's full name and final email contents.
+- [ ] Review the completed email below and send it as a reply to the original invitation.
 - [ ] Reply to the original invitation before the deadline.
 
 ## Agreed order of work
 
 **Record first → review the video → finish evaluation and packaging checks → verify the Drive link → prepare and send the email.**
 
-The recording, its review, current-model evaluation, and public repository publication are complete. The remaining work is Drive-link verification and the submission email. Continue studying the architecture, JWT, database, RAG, validation, and limitations for the later technical discussion; the two-minute video does not need to teach all of those topics in detail.
+The recording, its review, current-model evaluation, and public repository publication are complete. The Drive viewer link is verified. The remaining step is to review and send the submission email. Continue studying the architecture, JWT, database, RAG, validation, and limitations for the later technical discussion; the two-minute video does not need to teach all of those topics in detail.
 
 ## Packaging and credentials
 
@@ -45,25 +45,26 @@ The source package includes the schema, which creates the runtime SQLite databas
 python -m scripts.package
 ```
 
-The public source is available at [Teja2000-byte/policy-desk](https://github.com/Teja2000-byte/policy-desk). The ZIP is retained locally as a backup. The candidate is handling the recording upload; its Drive link has not yet been provided or verified. No submission email has been sent.
+The public source is available at [Teja2000-byte/policy-desk](https://github.com/Teja2000-byte/policy-desk). The ZIP is retained locally as a backup. The candidate uploaded the recording; its viewer link and basic playback have been verified. No submission email has been sent.
 
-## Email draft — fill in only after final review
+## Submission email — ready for candidate review
 
-Subject: `ASSIGNMENT SUBMISSION: <Your Full Name>`
+Subject: ASSIGNMENT SUBMISSION: Teja Gopal
 
 Hi Abhinav,
 
-Thank you for the opportunity. Please find my submission for the AI & Backend Engineering Internship assignment.
+Thank you for the opportunity. Please find my completed submission for the AI & Backend Engineering Internship assignment.
 
-Project: https://github.com/Teja2000-byte/policy-desk
+GitHub repository: https://github.com/Teja2000-byte/policy-desk
+Demo recording (1 minute 53 seconds): https://drive.google.com/file/d/1bqWFzBvWQtodxOo7bRhPpgmZ9RbMP87n/view?usp=sharing
 
-Demo recording: <Verified Google Drive viewer link>
+Policy Desk includes the requested Streamlit interface, FastAPI backend, JWT authentication, SQLite persistence, and Gemini-powered recommendations grounded in the supplied policies.
 
-Policy Desk implements a Streamlit interface, FastAPI endpoints, JWT authentication, SQLite persistence, and Gemini-based policy retrieval and structured recommendations. The project includes setup instructions, tests, an evaluation runner, and an AI-assisted development disclosure.
+The final model correctly handled all five supplied test cases, including the missing-information case. All 110 automated tests pass, and the repository includes setup instructions, evaluation results, and an AI-assisted development disclosure.
 
 I look forward to discussing the implementation and design decisions.
 
 Best regards,
-<Your Full Name>
+Teja Gopal
 
-Replace every placeholder before sending. No email has been sent.
+No email has been sent. Reply to the original invitation using the subject above.

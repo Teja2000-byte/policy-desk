@@ -80,13 +80,21 @@
     "selected_mp4_duration_seconds": 112.7,
     "review_method": "Sampled frames, local automatic transcript, duration and audio-level measurements; not direct listening.",
     "video_stream_unchanged": true,
-    "drive_upload_status": "PENDING"
+    "drive_upload_status": "UPLOADED_AND_ACCESS_VERIFIED",
+    "drive_url": "https://drive.google.com/file/d/1bqWFzBvWQtodxOo7bRhPpgmZ9RbMP87n/view?usp=sharing",
+    "drive_filename": "Policy_Desk_Demo_Final.mp4",
+    "drive_size_bytes": 24978753,
+    "drive_permission": "anyone/reader; link sharing, not discoverable",
+    "anonymous_viewer_http_status": 200,
+    "login_redirect": false,
+    "basic_browser_playback_verified": true,
+    "displayed_duration": "1:53",
+    "drive_verified_at": "2026-09-17T18:32:12.669374+00:00"
   },
   "engineering_requirements": "docs/REQUIREMENTS.md",
   "history": "reports/verification-history.md",
   "remaining_delivery_steps": [
-    "Candidate-provided Google Drive link and access check",
-    "Candidate-approved submission email"
+    "Candidate review and sending of the prepared submission email"
   ],
   "clean_source_package": {
     "files": 64,

@@ -46,7 +46,7 @@ Sources: the supplied five-page `AI_Engineering_Intern_Take_Home_Project.pdf`, t
 | Keep scope small and understandable | One backend, one frontend, one SQLite database; no extra app architecture |
 | Less than two-minute screen recording | Completed and reviewed; selected MP4 is 112.70 seconds |
 | Verbal explanation while sharing screen | Candidate recorded narration about the architecture while demonstrating the app |
-| Drive shareable recording link | Candidate will upload the completed recording and provide the link; access verification pending |
+| Drive shareable recording link | [Final video](https://drive.google.com/file/d/1bqWFzBvWQtodxOo7bRhPpgmZ9RbMP87n/view?usp=sharing); anyone-with-link viewer access and unauthenticated page access verified; playback advances |
 | Submission email subject | Template and checklist specify `ASSIGNMENT SUBMISSION: <Your Name>` |
 | Deadline | Sunday, 20 September 2026, as stated in the email; timezone/time not specified |
 
@@ -54,4 +54,4 @@ Sources: the supplied five-page `AI_Engineering_Intern_Take_Home_Project.pdf`, t
 
 The final **Gemini 3.5 Flash-Lite** configuration passed all five supplied cases over real authenticated HTTP: **5 correct, 0 incorrect, 0 service errors, 100% accuracy on this set**. The run used 11 of the authorized 30 API calls and saved all five tickets and validated decisions. Exact S05 returned `NEEDS_MORE_INFORMATION` with specific questions. See `reports/evaluation-current.json` and `reports/verification.md`.
 
-The **110 passing offline tests** use provider doubles and establish engineering behavior, not Gemini accuracy. The historical five- and twelve-case live reports used Gemini 2.5 Flash and an earlier prompt; their scores are not attributed to the final model. The additional 12 cases were not rerun on the final model, and the other 28 additional cases were not executed. The narrated recording and public repository are complete. The candidate's Drive link and final email are the remaining delivery steps.
+The **110 passing offline tests** use provider doubles and establish engineering behavior, not Gemini accuracy. The historical five- and twelve-case live reports used Gemini 2.5 Flash and an earlier prompt; their scores are not attributed to the final model. The additional 12 cases were not rerun on the final model, and the other 28 additional cases were not executed. The narrated recording and public repository are complete. The Drive link is verified. Only candidate review and sending of the final email remain.
