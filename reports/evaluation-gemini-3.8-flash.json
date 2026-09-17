@@ -1,0 +1,87 @@
+{
+  "total": 8,
+  "correct": 2,
+  "incorrect": 0,
+  "errors": 6,
+  "accuracy": 0.25,
+  "results": [
+    {
+      "case_id": "S01",
+      "expected_action": "REQUEST_PHOTOS",
+      "actual_action": null,
+      "correct": false,
+      "error": "Request failed or returned invalid data; inspect service status and rerun.",
+      "latency_ms": 14501
+    },
+    {
+      "case_id": "S02",
+      "expected_action": "APPROVE_RETURN",
+      "actual_action": null,
+      "correct": false,
+      "error": "Request failed or returned invalid data; inspect service status and rerun.",
+      "latency_ms": 14741
+    },
+    {
+      "case_id": "S03",
+      "expected_action": "OPEN_SHIPPING_INVESTIGATION",
+      "actual_action": "OPEN_SHIPPING_INVESTIGATION",
+      "correct": true,
+      "reason": "The customer reports that the parcel has not arrived 9 days after dispatch. According to the shipping policy, if an order has not arrived 8 to 10 days after dispatch, a shipping investigation should be opened.",
+      "sources": [
+        "shipping.md"
+      ],
+      "policy_version": "23f5194773eefe8def3b85efb773ed2fdc01b5eda20ab61610b7fe7f15e0cc3f",
+      "latency_ms": 9904
+    },
+    {
+      "case_id": "S04",
+      "expected_action": "REPLACE_CORRECT_ITEM",
+      "actual_action": null,
+      "correct": false,
+      "error": "Request failed or returned invalid data; inspect service status and rerun.",
+      "latency_ms": 8172
+    },
+    {
+      "case_id": "S05",
+      "expected_action": "NEEDS_MORE_INFORMATION",
+      "actual_action": null,
+      "correct": false,
+      "error": "Request failed or returned invalid data; inspect service status and rerun.",
+      "latency_ms": 10076
+    },
+    {
+      "case_id": "E01",
+      "expected_action": "APPROVE_REFUND_OR_REPLACEMENT",
+      "actual_action": "APPROVE_REFUND_OR_REPLACEMENT",
+      "correct": true,
+      "reason": "The customer reported physical damage within the 7-calendar-day eligibility window, and the order value is ₹2,000 or less, qualifying them for a refund or replacement without photographic evidence.",
+      "sources": [
+        "damaged_goods.md"
+      ],
+      "policy_version": "23f5194773eefe8def3b85efb773ed2fdc01b5eda20ab61610b7fe7f15e0cc3f",
+      "latency_ms": 8935
+    },
+    {
+      "case_id": "E09",
+      "expected_action": "REQUEST_DEFECT_EVIDENCE",
+      "actual_action": null,
+      "correct": false,
+      "error": "Request failed or returned invalid data; inspect service status and rerun.",
+      "latency_ms": 12252
+    },
+    {
+      "case_id": "E37",
+      "expected_action": "REQUEST_PHOTOS",
+      "actual_action": null,
+      "correct": false,
+      "error": "Request failed or returned invalid data; inspect service status and rerun.",
+      "latency_ms": 16413
+    }
+  ],
+  "provider": "gemini",
+  "model": "gemini-3.8-flash",
+  "embedding_model": "gemini-embedding-001",
+  "timestamp": "2026-09-17T14:20:12.189456+00:00",
+  "dataset": "demo_readiness_cases.json",
+  "dataset_sha256": "4d93bd5b5bbe3b8e1a3784dcbdb01c4ac398b88eb618da232caf62803d1eea48"
+}

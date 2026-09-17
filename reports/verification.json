@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-17T11:27:02.666004+00:00",
+  "checked_at": "2026-09-17T14:20:50.155794+00:00",
   "python": "3.12.14",
   "platform": "Darwin",
   "offline_tests": {
@@ -72,5 +72,37 @@
     "next_documented_daily_reset": "2026-09-18T00:00:00-07:00",
     "handling": "Specific safe quota message; no immediate retry on HTTP 429.",
     "historical_live_reports_preserved": true
-  }
+  },
+  "local_launch_recovery": {
+    "status": "VERIFIED",
+    "backend_http_status": 200,
+    "frontend_http_status": 200,
+    "browser_sign_in_screen_verified": true,
+    "launch_method": "Prepared Mac Terminal shortcut; keep its Terminal open.",
+    "main_model_unchanged": "gemini-2.5-flash"
+  },
+  "alternate_model_diagnostics": [
+    {
+      "report": "reports/evaluation-flash-lite.json",
+      "model": "gemini-2.5-flash-lite",
+      "total": 5,
+      "correct": 0,
+      "incorrect": 0,
+      "errors": 5,
+      "accuracy": 0.0,
+      "timestamp": "2026-09-17T14:14:20.153541+00:00",
+      "selected_as_default": false
+    },
+    {
+      "report": "reports/evaluation-gemini-3.8-flash.json",
+      "model": "gemini-3.8-flash",
+      "total": 8,
+      "correct": 2,
+      "incorrect": 0,
+      "errors": 6,
+      "accuracy": 0.25,
+      "timestamp": "2026-09-17T14:20:12.189456+00:00",
+      "selected_as_default": false
+    }
+  ]
 }

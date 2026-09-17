@@ -33,6 +33,8 @@ After the candidate privately configured their key, the agent ran real Gemini in
 
 See `reports/verification.md` for the executed checks and their limits. The remaining 28 additional cases were not executed. Test doubles live exclusively under `tests/`; they are not a production mode.
 
+The local app was later restarted through a Mac Terminal launcher after its server processes stopped. Optional Gemini Flash-Lite and Gemini 3.8 Flash checks did not justify switching the default: generation returned model-access or transient service errors. Their actual reports were retained. No model, billing, authentication, or decision-logic changes were made during this recovery.
+
 ## Candidate ownership before submission
 
 The candidate should read the code, run the app with their own Gemini key, review actual evaluation failures, and practice explaining a full request without reading the script. The study guide is preparation material, not evidence that this review has already happened.

@@ -26,6 +26,8 @@ If `.env` already exists, use `python scripts/setup.py --set-key` to enter the k
 
 Open **[the app](http://127.0.0.1:8501)** and **[interactive API docs](http://127.0.0.1:8000/docs)**. `Ctrl+C` stops both services. The app runs on localhost only.
 
+Keep the terminal running while using the application. If the browser reports **"site cannot be reached"**, start `python run.py` again and reload the page. The local URL is not a hosted public website and will be unavailable after the server stops or the computer shuts down. This is separate from a Gemini quota error, which appears inside the running app.
+
 1. Create an account, or sign in.
 2. Choose **New decision**, enter a ticket and known order facts, then generate.
 3. Review the action, reason, confidence, follow-up questions, and exact policy quotes.
@@ -66,6 +68,8 @@ The live runner creates an isolated evaluation account, registers and logs in ov
 Reports show total, correct, incorrect, errors, accuracy, per-case outcomes, model, dataset hash, and policy version. Accuracy is **correct / all cases**, including service failures in the denominator. A missing key stops evaluation with **NOT RUN** and no claimed score. The supplied five cases are a smoke test, not a generalization benchmark. Historical labels may be less specific than policy prose; inspect discrepancies instead of copying labels into inference.
 
 See [verification status](reports/verification.md) for what was actually run, and [the requirement checklist](docs/REQUIREMENTS.md) for coverage of the brief.
+
+Optional alternate-model diagnostics are also preserved in `reports/evaluation-flash-lite.json` and `reports/evaluation-gemini-3.8-flash.json`. They include service failures and are not passing evaluations. The configured default remains the verified `gemini-2.5-flash`.
 
 ## Gemini quota troubleshooting
 

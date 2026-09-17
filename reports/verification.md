@@ -59,3 +59,11 @@ The provider now shows a specific daily-quota/reset message, keeps raw provider 
 ## Candidate steps still pending
 
 Study and explain the implementation, create the under-two-minute narrated screen recording, upload it to Drive with a verified viewer link, and send the final email. The source ZIP is a local deliverable, not a published GitHub repository. See [the demo script](../docs/DEMO_SCRIPT.md) and [submission checklist](../docs/SUBMISSION_CHECKLIST.md).
+
+## Local launch recovery and alternative-model checks
+
+Later on 17 September, neither local server was running, so the browser showed "site cannot be reached." The prepared Mac workspace now includes a double-click launcher outside the submission source tree. It starts `python run.py` in Terminal independently of the temporary development command session. Both health endpoints returned HTTP 200, and the sign-in screen was visibly verified in the browser. Keep the launcher Terminal open while using the app. The reviewer uses the portable README setup.
+
+Two optional alternative-model checks were performed without changing the main app's configuration or billing. `gemini-2.5-flash-lite` metadata was accessible, but generation returned 404 NOT_FOUND; its five-case report records service errors rather than incorrect recommendations. `gemini-3.8-flash` answered an initial access probe but produced intermittent 503 UNAVAILABLE errors in the actual ticket pipeline. Its eight-case report includes the five supplied cases plus preselected E01, E09, and E37. The saved reports preserve unsuccessful attempts instead of presenting them as passing.
+
+The main application therefore remains on the previously verified `gemini-2.5-flash`. The earlier 5/5 and 12/12 results apply to that model and those completed runs. The alternate model reports are diagnostics, not grounds for replacing it or claiming it is more reliable. The same 28 extended cases remain unexecuted; the three selected for the alternate check were already among the 12 earlier boundaries.

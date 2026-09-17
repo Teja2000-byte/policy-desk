@@ -8,11 +8,20 @@ Deadline stated in the invitation: **Sunday, 20 September 2026**. No cutoff time
 - [x] Run the real Gemini sample evaluation: **5/5 correct**, zero errors; saved in `reports/evaluation.json`.
 - [x] Run preselected additional boundaries: **12/12 correct**, zero errors; saved in `reports/boundary-evaluation.json`. The other 28 additional cases were not run.
 - [x] Generate a real result in Streamlit and reopen it from History.
+- [x] Restore local app startup and verify the browser sign-in screen after the servers stopped.
 - [ ] Read the study guide and explain the code without relying on memorized text.
 - [ ] Record your own under-two-minute narrated screen demonstration.
 - [ ] Upload the recording to Google Drive and verify the shareable viewer link.
 - [ ] Confirm your preferred full name for the email subject/signature.
 - [ ] Reply to the original email with the public GitHub link or project ZIP and the recording link.
+
+## Finish in this order
+
+1. Study `docs/STUDY_GUIDE.md`, then rehearse `docs/DEMO_SCRIPT.md` in your own words.
+2. Once the main model's quota resets, sign in to your demo account and prepare the damage and missing-information examples. Avoid rerunning the full evaluation suites before recording.
+3. Record a 1:45–1:55 screen demonstration with your microphone enabled. Play it back and check that the interface and your explanation are clear.
+4. Upload the recording to Google Drive and test its viewer link in a signed-out/private browser.
+5. Attach `policy-desk-submission.zip` to your reply, add the recording link, replace the name placeholders, and send before the stated deadline. Do not send the localhost URL as the project submission; it only works on the computer running the app.
 
 ## Project packaging
 

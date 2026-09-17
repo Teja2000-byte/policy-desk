@@ -1,0 +1,55 @@
+{
+  "total": 5,
+  "correct": 0,
+  "incorrect": 0,
+  "errors": 5,
+  "accuracy": 0.0,
+  "results": [
+    {
+      "case_id": "S01",
+      "expected_action": "REQUEST_PHOTOS",
+      "actual_action": null,
+      "correct": false,
+      "error": "Request failed or returned invalid data; inspect service status and rerun.",
+      "latency_ms": 1102
+    },
+    {
+      "case_id": "S02",
+      "expected_action": "APPROVE_RETURN",
+      "actual_action": null,
+      "correct": false,
+      "error": "Request failed or returned invalid data; inspect service status and rerun.",
+      "latency_ms": 1225
+    },
+    {
+      "case_id": "S03",
+      "expected_action": "OPEN_SHIPPING_INVESTIGATION",
+      "actual_action": null,
+      "correct": false,
+      "error": "Request failed or returned invalid data; inspect service status and rerun.",
+      "latency_ms": 1162
+    },
+    {
+      "case_id": "S04",
+      "expected_action": "REPLACE_CORRECT_ITEM",
+      "actual_action": null,
+      "correct": false,
+      "error": "Request failed or returned invalid data; inspect service status and rerun.",
+      "latency_ms": 971
+    },
+    {
+      "case_id": "S05",
+      "expected_action": "NEEDS_MORE_INFORMATION",
+      "actual_action": null,
+      "correct": false,
+      "error": "Request failed or returned invalid data; inspect service status and rerun.",
+      "latency_ms": 1064
+    }
+  ],
+  "provider": "gemini",
+  "model": "gemini-2.5-flash-lite",
+  "embedding_model": "gemini-embedding-001",
+  "timestamp": "2026-09-17T14:14:20.153541+00:00",
+  "dataset": "sample_test_cases.json",
+  "dataset_sha256": "d6f9e2f8d5e843b40699242825e5fedd7db47e8e4b19e65beee9f243f38f476a"
+}
