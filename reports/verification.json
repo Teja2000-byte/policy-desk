@@ -1,0 +1,21 @@
+{
+  "checked_at": "2026-09-17T09:46:28.079414+00:00",
+  "python": "3.12.14",
+  "platform": "Darwin",
+  "offline_tests": {
+    "total": 86,
+    "passed": 86,
+    "failures": 0,
+    "errors": 0,
+    "src_statement_coverage_percent": 98.91
+  },
+  "live_gemini_evaluation": {
+    "status": "NOT_RUN",
+    "reason": "Candidate Gemini API key not configured. The evaluator preflight was executed and correctly stopped; no live accuracy is claimed."
+  },
+  "original_pack_integrity": "All six policies, tickets.csv, sample_test_cases.json and DATA_NOTES.md match byte-for-byte.",
+  "recording": {
+    "status": "PENDING_CANDIDATE_RECORDING",
+    "script": "docs/DEMO_SCRIPT.md"
+  }
+}
