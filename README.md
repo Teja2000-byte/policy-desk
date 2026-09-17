@@ -1,5 +1,7 @@
 # ◈ Policy Desk
 
+[![Tests](https://github.com/Teja2000-byte/policy-desk/actions/workflows/tests.yml/badge.svg)](https://github.com/Teja2000-byte/policy-desk/actions/workflows/tests.yml)
+
 **An authenticated support-ticket assistant that explains its recommendations with policy evidence.**
 
 Streamlit → HTTP → FastAPI → local retrieval → Gemini → validated decision → SQLite.

@@ -47,4 +47,4 @@ This is roughly 170 spoken words. Your pace and model response time determine th
 - Your voice is audible; no API key, JWT, password, `.env`, or unrelated personal tab is exposed.
 - Watch the whole video before sharing it.
 
-The recording review and current-model evaluation are complete. Finish repository/package checks, upload the selected video to Google Drive, verify its viewer link, and prepare the submission email. The video does not need to be re-recorded to add evaluation numbers.
+The recording review, current-model evaluation, repository publication, and package checks are complete. Upload the selected video to Google Drive, verify its viewer link, and prepare the submission email. The video does not need to be re-recorded to add evaluation numbers.

@@ -85,7 +85,6 @@
   "engineering_requirements": "docs/REQUIREMENTS.md",
   "history": "reports/verification-history.md",
   "remaining_delivery_steps": [
-    "Public repository publication and anonymous verification",
     "Candidate-provided Google Drive link and access check",
     "Candidate-approved submission email"
   ],
@@ -103,5 +102,28 @@
     "current_secrets_and_checked_credential_pattern_findings": 0,
     "broken_local_markdown_links": 0,
     "github_actions_workflow": ".github/workflows/tests.yml"
+  },
+  "repository": {
+    "url": "https://github.com/Teja2000-byte/policy-desk",
+    "visibility": "public",
+    "default_branch": "main",
+    "anonymous_page_http_status": 200,
+    "anonymous_api_http_status": 200,
+    "published_files": 64,
+    "public_tree_matched_local": true,
+    "verified_at": "2026-09-17T18:25:39.343807+00:00"
+  },
+  "github_actions": {
+    "status": "PASSED",
+    "url": "https://github.com/Teja2000-byte/policy-desk/actions/runs/35258635098",
+    "verified_application_commit": "dc82da5945e314455fecb9a5dfec65081115d338",
+    "platform": "ubuntu-latest",
+    "python": "3.12",
+    "checks": [
+      "Fresh dependency installation",
+      "Ruff",
+      "Offline pytest suite"
+    ],
+    "gemini_key_provided": false
   }
 }

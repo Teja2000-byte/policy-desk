@@ -12,6 +12,7 @@ The final configuration uses **Gemini 3.5 Flash-Lite**, Python 3.12, and Gemini 
 | Offline engineering tests | **110 passed**, no failures or errors | Full suite rerun after the final application changes |
 | Statement coverage of `src/` | **99.01% (499/504 statements)** | pytest-cov; frontend and scripts are outside this denominator |
 | Code checks | Ruff and Git whitespace checks passed | Local checks |
+| GitHub Actions on Linux | Fresh dependency installation, Ruff, and the offline suite **passed** | [Successful workflow run](https://github.com/Teja2000-byte/policy-desk/actions/runs/35258635098) |
 | Supplied data | All **9 files unchanged**, including **6 policies** and the **214-row CSV** | Byte-for-byte comparison |
 | Schema | `docs/schema.sql` matches the canonical schema | Direct comparison with `src/database.py` |
 | Clean source package | Fresh no-key setup succeeded; **110 tests** and Ruff passed after extraction | Reviewer-style copy with no local account database or Gemini key |
@@ -40,7 +41,9 @@ The suite verifies registration and password hashing; required routes; valid, ex
 
 These tests use isolated provider doubles. They test engineering behavior and do not establish Gemini accuracy. GitHub Actions runs this same offline suite without a Gemini key. Two local framework deprecation warnings did not fail the tests.
 
-The packaged source was extracted into a new folder and configured with the documented setup helper using `--no-key`. All 110 tests and Ruff passed there as well. The checks reused the installed Python environment; the GitHub workflow separately installs dependencies on a Linux runner. Local Markdown links were checked, the ZIP matched all 64 publishable source/documentation files at this stage, and the credential scan found no current secrets or checked common credential patterns. Ignored `.env`, databases, and runtime files were absent from the source package.
+The packaged source was extracted into a new folder and configured with the documented setup helper using `--no-key`. All 110 tests and Ruff passed there as well. The local checks reused the installed Python environment. GitHub Actions independently installed the pinned dependencies on a Linux runner and passed Ruff and the offline suite. Local Markdown links were checked, the ZIP matched all 64 publishable source/documentation files at this stage, and the credential scan found no current secrets or checked common credential patterns. Ignored `.env`, databases, and runtime files were absent from the source package.
+
+The [public repository](https://github.com/Teja2000-byte/policy-desk) returned HTTP 200 without authentication. Its published source tree and commit matched the reviewed local project. The recording's Google Drive link remains the candidate's separate delivery step.
 
 ## Historical results and failures
 
