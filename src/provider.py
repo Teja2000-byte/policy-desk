@@ -1,3 +1,4 @@
+import logging
 import time
 
 import httpx
@@ -7,6 +8,8 @@ from google.genai import errors, types
 
 from src.config import Settings
 from src.schemas import DecisionOutput
+
+logger = logging.getLogger(__name__)
 
 
 class ProviderUnavailable(Exception):
@@ -37,6 +40,40 @@ def quota_message(exc: errors.APIError) -> str:
     )
 
 
+def api_error_message(exc: errors.APIError) -> str:
+    """Return fixed guidance, never provider response text or sensitive metadata."""
+    if exc.code == 429:
+        return quota_message(exc)
+    payload = exc.details if isinstance(exc.details, dict) else {}
+    payload = payload.get("error", payload)
+    payload = payload if isinstance(payload, dict) else {}
+    details = payload.get("details", [])
+    reasons = {
+        item.get("reason")
+        for item in details if isinstance(item, dict) and isinstance(item.get("reason"), str)
+    } if isinstance(details, list) else set()
+    if reasons & {"API_KEY_INVALID", "API_KEY_EXPIRED", "API_KEY_NOT_FOUND", "CREDENTIALS_MISSING"}:
+        return "Google rejected the API key. Ask the key owner to check its validity in Google AI Studio."
+    if exc.code == 401:
+        return "Google could not authenticate this API key. Ask the key owner to check its validity."
+    if exc.code == 403:
+        return (
+            "Google denied access. Ask the key owner to check API restrictions, blocked-key status, "
+            "and project/model permissions in Google AI Studio."
+        )
+    if exc.code == 404:
+        return "Google could not find the requested model or API resource. Check model availability and name."
+    if exc.code == 400 and payload.get("status") == "FAILED_PRECONDITION":
+        return "Google rejected the project's setup. The key owner should check its API eligibility and setup."
+    if exc.code == 400:
+        return "Google rejected the request. Check API-key validity and the model's supported request settings."
+    if exc.code == 504:
+        return "Google's Gemini service timed out. Wait before trying again."
+    if isinstance(exc.code, int) and exc.code >= 500:
+        return "Google's Gemini service is temporarily unavailable or failed internally. Wait before trying again."
+    return "Google rejected the Gemini request. Check the backend model configuration and project access."
+
+
 class GeminiProvider:
     def __init__(self, settings: Settings):
         self.settings = settings
@@ -50,7 +87,7 @@ class GeminiProvider:
                 ),
             )
 
-    def _call(self, fn):
+    def _call(self, fn, *, operation="request"):
         if self.client is None:
             raise ProviderUnavailable(
                 "Gemini is not configured. Add your own GEMINI_API_KEY to the backend .env and restart."
@@ -59,22 +96,22 @@ class GeminiProvider:
             try:
                 return fn()
             except errors.APIError as exc:
-                if exc.code == 429:
-                    # A one-second retry cannot resolve a daily quota and can worsen throttling.
-                    raise ProviderUnavailable(quota_message(exc)) from None
-                transient = exc.code is not None and exc.code >= 500
+                # A one-second retry cannot resolve quota exhaustion; only retry server failures.
+                transient = isinstance(exc.code, int) and exc.code >= 500
                 if transient and attempt == 0:
                     time.sleep(1)
                     continue
+                code = exc.code if isinstance(exc.code, int) else "unknown"
+                logger.warning("Gemini %s failed: HTTP %s", operation, code)
                 raise ProviderUnavailable(
-                    "Gemini is unavailable. Check the backend API key, model access, quota, and network; then retry."
+                    f"{api_error_message(exc)} Failed step: {operation}. Google HTTP status: {code}."
                 ) from None
             except (httpx.HTTPError, TimeoutError, OSError):
                 if attempt == 0:
                     time.sleep(1)
                     continue
                 raise ProviderUnavailable(
-                    "Gemini request timed out or could not connect. Please retry."
+                    f"Gemini request timed out or could not connect. Failed step: {operation}. Please retry."
                 ) from None
 
     def embed(self, texts: list[str], task_type: str) -> np.ndarray:
@@ -85,7 +122,8 @@ class GeminiProvider:
                 config=types.EmbedContentConfig(
                     task_type=task_type, output_dimensionality=self.settings.embedding_dimensions
                 ),
-            )
+            ),
+            operation="policy retrieval embedding",
         )
         try:
             values = np.asarray([item.values for item in response.embeddings], dtype=np.float32)
@@ -113,7 +151,8 @@ class GeminiProvider:
                     response_mime_type="application/json",
                     response_json_schema=DecisionOutput.model_json_schema(),
                 ),
-            )
+            ),
+            operation="decision generation",
         )
         return response.text or ""
 

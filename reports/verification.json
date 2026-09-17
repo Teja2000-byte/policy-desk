@@ -1,13 +1,13 @@
 {
-  "checked_at": "2026-09-17T14:20:50.155794+00:00",
+  "checked_at": "2026-09-17T14:52:56.401066+00:00",
   "python": "3.12.14",
   "platform": "Darwin",
   "offline_tests": {
-    "total": 93,
-    "passed": 93,
+    "total": 106,
+    "passed": 106,
     "failures": 0,
     "errors": 0,
-    "src_statement_coverage_percent": 98.94
+    "src_statement_coverage_percent": 99.0
   },
   "live_gemini_evaluation": {
     "status": "PASSED",
@@ -104,5 +104,15 @@
       "timestamp": "2026-09-17T14:20:12.189456+00:00",
       "selected_as_default": false
     }
-  ]
+  ],
+  "replacement_key_troubleshooting": {
+    "local_configuration_checked": true,
+    "key_file_private_mode": "0600",
+    "configured_model": "gemini-2.5-flash",
+    "backend_http_status": 200,
+    "frontend_http_status": 200,
+    "agent_gemini_requests_in_this_troubleshooting_turn": 0,
+    "provider_access_status": "UNCONFIRMED_PENDING_USER_ATTEMPT",
+    "change": "Safe specific guidance with failed operation and Google HTTP status."
+  }
 }

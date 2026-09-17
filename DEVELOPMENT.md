@@ -35,6 +35,8 @@ See `reports/verification.md` for the executed checks and their limits. The rema
 
 The local app was later restarted through a Mac Terminal launcher after its server processes stopped. Optional Gemini Flash-Lite and Gemini 3.8 Flash checks did not justify switching the default: generation returned model-access or transient service errors. Their actual reports were retained. No model, billing, authentication, or decision-logic changes were made during this recovery.
 
+A later user-reported failure after a private key change showed that the generic provider message hid the actionable error category. Error handling now includes the failed operation and Google HTTP status, with fixed guidance for authentication, permissions, model availability, quota, request setup, and server failures. Logs retain only operation/status; provider bodies, keys, and tickets remain private. Thirteen regression cases were added; all 106 offline tests passed. No real Gemini request was made during this troubleshooting change, honoring the candidate's instruction to preserve the replacement key's quota.
+
 ## Candidate ownership before submission
 
 The candidate should read the code, run the app with their own Gemini key, review actual evaluation failures, and practice explaining a full request without reading the script. The study guide is preparation material, not evidence that this review has already happened.

@@ -43,7 +43,7 @@ Without a Gemini key, registration, login, and empty history work; decision gene
 
 ## Verification and evaluation
 
-Verified on **17 September 2026**: **93/93 offline tests**, **5/5 supplied cases with real Gemini**, and **12/12 preselected additional boundary/adversarial cases**, with zero live service errors. The live Streamlit result and saved history were also checked in a browser. These small, visible suites are smoke tests; they do not establish accuracy on unseen tickets. See [the full verification record](reports/verification.md).
+Verified on **17 September 2026**: **106/106 offline tests**, **5/5 supplied cases with real Gemini**, and **12/12 preselected additional boundary/adversarial cases**, with zero live service errors. The live Streamlit result and saved history were also checked in a browser. These small, visible suites are smoke tests; they do not establish accuracy on unseen tickets. See [the full verification record](reports/verification.md).
 
 ```bash
 # Offline engineering tests: no API key or paid model calls
@@ -74,6 +74,8 @@ Optional alternate-model diagnostics are also preserved in `reports/evaluation-f
 ## Gemini quota troubleshooting
 
 If a decision fails with a daily-quota message, wait for the daily reset at midnight Pacific Time. The key can be valid while generation quota is exhausted. The app preserves existing history and does not save a failed decision. It does not immediately retry HTTP 429; network/server failures retain one bounded retry. Check your project's active limits in [Google AI Studio](https://aistudio.google.com/usage?tab=rate-limit); limits vary by model and project.
+
+Provider failures show the failed step and Google HTTP status, with fixed guidance for rejected keys, permissions, missing models, quota, and server outages. Raw provider responses, credentials, and ticket text are never included in these messages or diagnostic logs. A configured key in `/health` confirms local setup only; it does not verify access to Gemini.
 
 During local verification on 17 September 2026, Gemini later reported a **20-request daily free-tier limit** for `gemini-2.5-flash`. The earlier successful reports remain valid records of those completed runs. Reserve quota for your demonstration instead of repeatedly rerunning the evaluation suites. [Google's reset documentation](https://ai.google.dev/gemini-api/docs/rate-limits).
 

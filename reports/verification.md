@@ -6,7 +6,7 @@ Checked on **17 September 2026**, using Python 3.12 on macOS. Machine-readable s
 
 | Check | Result | Evidence |
 |---|---|---|
-| Offline engineering tests | **93 passed**, zero failures/errors | Automated test run; 98.94% `src/` statement coverage |
+| Offline engineering tests | **106 passed**, zero failures/errors | Automated test run; 99.00% `src/` statement coverage |
 | Real Gemini ingestion | **6 policies, 12 indexed chunks** | Persistent local Gemini embedding index |
 | Supplied live sample cases | **5/5 correct**, zero incorrect/errors | [evaluation.json](evaluation.json) |
 | Preselected additional live cases | **12/12 correct**, zero incorrect/errors | [boundary-evaluation.json](boundary-evaluation.json) |
@@ -26,7 +26,7 @@ Coverage includes the ₹2,000 damage threshold and seven-day cutoff; the ₹3,0
 
 ## Engineering checks
 
-- **98.94% statement coverage of `src/`** (468 of 473 statements). The frontend file and scripts are outside this coverage denominator; separate tests exercise their behavior.
+- **99.00% statement coverage of `src/`** (495 of 500 statements). The frontend file and scripts are outside this coverage denominator; separate tests exercise their behavior.
 - Ruff static checks and Python compilation passed. A clean extraction of the initial source ZIP also passed all 86 tests and Ruff. The latest quota-handling change passed the complete 93-test suite and Ruff. It changes error reporting and suppresses immediate quota retries.
 - All six original policy files, the 214-row historical CSV, data notes, and five supplied sample cases match the candidate pack byte for byte.
 - Browser checks verified registration/sign-in, populated examples, navigation, the missing-key error before configuration, and the real result/history after configuration.
@@ -67,3 +67,11 @@ Later on 17 September, neither local server was running, so the browser showed "
 Two optional alternative-model checks were performed without changing the main app's configuration or billing. `gemini-2.5-flash-lite` metadata was accessible, but generation returned 404 NOT_FOUND; its five-case report records service errors rather than incorrect recommendations. `gemini-3.8-flash` answered an initial access probe but produced intermittent 503 UNAVAILABLE errors in the actual ticket pipeline. Its eight-case report includes the five supplied cases plus preselected E01, E09, and E37. The saved reports preserve unsuccessful attempts instead of presenting them as passing.
 
 The main application therefore remains on the previously verified `gemini-2.5-flash`. The earlier 5/5 and 12/12 results apply to that model and those completed runs. The alternate model reports are diagnostics, not grounds for replacing it or claiming it is more reliable. The same 28 extended cases remain unexecuted; the three selected for the alternate check were already among the 12 earlier boundaries.
+
+## Replacement-key troubleshooting
+
+After the candidate replaced the local key and reported another generic error, local inspection confirmed that Settings reads the configured file, the key is nonempty with no whitespace or duplicate declaration, and the private file permissions remain 0600. This does not establish whether Google accepts that key.
+
+The provider now reports the failed operation and Google HTTP status, using fixed messages for authentication, permissions, missing resources/models, invalid setup/request, quota, and server errors. Diagnostic logs contain only operation and status. Thirteen regression cases brought the full offline suite to **106 passing tests**, with **99.00% `src/` statement coverage** (495/500), and Ruff passed. Both local services were restarted and their health endpoints returned 200.
+
+**No Gemini requests were made during this troubleshooting turn.** The replacement key's validity, access, remaining quota, and exact cause of the user-reported failure remain unconfirmed pending a user-initiated attempt with the improved error details. Historical successful evaluation reports remain unchanged.

@@ -153,3 +153,48 @@ def test_other_or_malformed_quota_details_produce_safe_non_daily_message(setting
     assert "request or token limit" in str(exc.value)
     assert "midnight" not in str(exc.value)
     assert "private-detail" not in str(exc.value)
+
+
+@pytest.mark.parametrize(
+    "code,payload,expected",
+    [
+        (400, {"details": [{"reason": "API_KEY_INVALID"}]}, "rejected the API key"),
+        (400, {"details": [{"reason": "API_KEY_EXPIRED"}]}, "rejected the API key"),
+        (401, {}, "could not authenticate"),
+        (403, {}, "denied access"),
+        (404, {}, "could not find"),
+        (400, {"status": "FAILED_PRECONDITION"}, "project's setup"),
+        (400, {}, "supported request settings"),
+        (500, {}, "temporarily unavailable"),
+        (503, {}, "temporarily unavailable"),
+        (504, {}, "service timed out"),
+        (409, {}, "rejected the Gemini request"),
+        (400, {"details": [None, {"reason": ["private"]}]}, "supported request settings"),
+    ],
+)
+def test_api_failures_show_actionable_safe_guidance(settings, monkeypatch, caplog, code, payload, expected):
+    provider = make_provider(settings)
+    monkeypatch.setattr("src.provider.time.sleep", lambda _: None)
+    payload = {**payload, "message": "private-key-and-ticket-data"}
+
+    def call():
+        raise errors.ClientError(code, {"error": payload})
+
+    with pytest.raises(ProviderUnavailable) as exc:
+        provider._call(call, operation="decision generation")
+    message = str(exc.value)
+    assert expected in message
+    assert f"Google HTTP status: {code}" in message
+    assert "Failed step: decision generation" in message
+    assert "private-key-and-ticket-data" not in message + caplog.text
+
+
+def test_embedding_failure_is_identified_without_generating_a_decision(settings):
+    provider = make_provider(settings)
+
+    def embed(**kwargs):
+        raise errors.ClientError(403, {"error": {"message": "private-key"}})
+
+    provider.client.models.embed_content = embed
+    with pytest.raises(ProviderUnavailable, match="policy retrieval embedding"):
+        provider.embed(["sample ticket"], "RETRIEVAL_QUERY")
