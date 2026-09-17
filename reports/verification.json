@@ -1,13 +1,13 @@
 {
-  "checked_at": "2026-09-17T11:18:59.448907+00:00",
+  "checked_at": "2026-09-17T11:27:02.666004+00:00",
   "python": "3.12.14",
   "platform": "Darwin",
   "offline_tests": {
-    "total": 86,
-    "passed": 86,
+    "total": 93,
+    "passed": 93,
     "failures": 0,
     "errors": 0,
-    "src_statement_coverage_percent": 98.91
+    "src_statement_coverage_percent": 98.94
   },
   "live_gemini_evaluation": {
     "status": "PASSED",
@@ -60,5 +60,17 @@
     "remaining_additional_cases_not_run": 28,
     "historical_diagnostic_run": false,
     "limitation": "Visible smoke suites; not an estimate of unseen-ticket accuracy."
+  },
+  "subsequent_provider_status": {
+    "status": "DAILY_GENERATION_QUOTA_EXHAUSTED",
+    "http_code": 429,
+    "model": "gemini-2.5-flash",
+    "quota_id": "GenerateRequestsPerDayPerProjectPerModel-FreeTier",
+    "quota_value": 20,
+    "embedding_access": "OK",
+    "checked_at": "2026-09-17T11:23:23.789763+00:00",
+    "next_documented_daily_reset": "2026-09-18T00:00:00-07:00",
+    "handling": "Specific safe quota message; no immediate retry on HTTP 429.",
+    "historical_live_reports_preserved": true
   }
 }

@@ -96,7 +96,7 @@ def test_exhausted_network_failure_sanitizes_error(settings, monkeypatch):
     assert "sensitive-provider-response" not in str(exc.value)
 
 
-@pytest.mark.parametrize("code,expected_calls", [(400, 1), (401, 1), (403, 1), (429, 2), (500, 2)])
+@pytest.mark.parametrize("code,expected_calls", [(400, 1), (401, 1), (403, 1), (429, 1), (500, 2)])
 def test_provider_retries_only_transient_api_errors(settings, monkeypatch, code, expected_calls):
     provider = make_provider(settings)
     monkeypatch.setattr("src.provider.time.sleep", lambda _: None)
@@ -110,3 +110,46 @@ def test_provider_retries_only_transient_api_errors(settings, monkeypatch, code,
         provider._call(call)
     assert len(calls) == expected_calls
     assert "private error" not in str(exc.value)
+
+
+@pytest.mark.parametrize("wrapped", [True, False])
+def test_daily_quota_explains_reset_without_retrying_or_leaking_details(
+    settings, monkeypatch, wrapped
+):
+    provider = make_provider(settings)
+    monkeypatch.setattr("src.provider.time.sleep", lambda _: pytest.fail("Quota must not retry"))
+    payload = {
+        "message": "private-key-and-provider-detail",
+        "details": [{"violations": [{"quotaId": "GenerateRequestsPerDayPerProjectPerModel-FreeTier"}]}],
+    }
+    calls = []
+
+    def call():
+        calls.append(1)
+        raise errors.ClientError(429, {"error": payload} if wrapped else payload)
+
+    with pytest.raises(ProviderUnavailable) as exc:
+        provider._call(call)
+    assert len(calls) == 1
+    assert "daily request quota" in str(exc.value)
+    assert "midnight Pacific Time" in str(exc.value)
+    assert "History" in str(exc.value)
+    assert "private-key-and-provider-detail" not in str(exc.value)
+
+
+@pytest.mark.parametrize(
+    "details",
+    [None, "private-detail", [None], [{"violations": None}],
+     [{"violations": [None, {"quotaId": "GenerateRequestsPerMinutePerProject"}]}]],
+)
+def test_other_or_malformed_quota_details_produce_safe_non_daily_message(settings, details):
+    provider = make_provider(settings)
+
+    def call():
+        raise errors.ClientError(429, {"error": {"details": details}})
+
+    with pytest.raises(ProviderUnavailable) as exc:
+        provider._call(call)
+    assert "request or token limit" in str(exc.value)
+    assert "midnight" not in str(exc.value)
+    assert "private-detail" not in str(exc.value)

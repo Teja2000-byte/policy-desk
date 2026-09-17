@@ -13,6 +13,30 @@ class ProviderUnavailable(Exception):
     """A safe error message; never contains provider response bodies or keys."""
 
 
+def quota_message(exc: errors.APIError) -> str:
+    """Classify structured quota metadata without exposing provider error text."""
+    payload = exc.details if isinstance(exc.details, dict) else {}
+    payload = payload.get("error", payload)
+    details = payload.get("details", []) if isinstance(payload, dict) else []
+    for detail in details if isinstance(details, list) else []:
+        if not isinstance(detail, dict):
+            continue
+        violations = detail.get("violations", [])
+        for violation in violations if isinstance(violations, list) else []:
+            if isinstance(violation, dict) and "perday" in str(
+                violation.get("quotaId", "")
+            ).lower():
+                return (
+                    "Gemini's daily request quota has been reached. New decisions can resume "
+                    "after the quota resets at midnight Pacific Time. "
+                    "Saved decisions remain available in History."
+                )
+    return (
+        "Gemini's request or token limit has been reached. Wait before retrying and check "
+        "your project's usage in Google AI Studio. Saved decisions remain available in History."
+    )
+
+
 class GeminiProvider:
     def __init__(self, settings: Settings):
         self.settings = settings
@@ -35,7 +59,10 @@ class GeminiProvider:
             try:
                 return fn()
             except errors.APIError as exc:
-                transient = exc.code == 429 or (exc.code is not None and exc.code >= 500)
+                if exc.code == 429:
+                    # A one-second retry cannot resolve a daily quota and can worsen throttling.
+                    raise ProviderUnavailable(quota_message(exc)) from None
+                transient = exc.code is not None and exc.code >= 500
                 if transient and attempt == 0:
                     time.sleep(1)
                     continue

@@ -6,13 +6,13 @@ Checked on **17 September 2026**, using Python 3.12 on macOS. Machine-readable s
 
 | Check | Result | Evidence |
 |---|---|---|
-| Offline engineering tests | **86 passed**, zero failures/errors | Automated test run; 98.91% `src/` statement coverage |
+| Offline engineering tests | **93 passed**, zero failures/errors | Automated test run; 98.94% `src/` statement coverage |
 | Real Gemini ingestion | **6 policies, 12 indexed chunks** | Persistent local Gemini embedding index |
 | Supplied live sample cases | **5/5 correct**, zero incorrect/errors | [evaluation.json](evaluation.json) |
 | Preselected additional live cases | **12/12 correct**, zero incorrect/errors | [boundary-evaluation.json](boundary-evaluation.json) |
 | Browser end-to-end check | Real damage decision generated, evidence displayed, saved result reopened from History | Streamlit → FastAPI → Gemini → SQLite → History |
 
-Both live suites used **`gemini-2.5-flash`** and **`gemini-embedding-001`**. The policy fingerprint was `23f5194773eefe8def3b85efb773ed2fdc01b5eda20ab61610b7fe7f15e0cc3f`. Report files preserve run timestamps, dataset hashes, expected/actual actions, reasons, sources, and per-case elapsed times. No production code was changed after observing these live outcomes.
+Both live suites used **`gemini-2.5-flash`** and **`gemini-embedding-001`**. The policy fingerprint was `23f5194773eefe8def3b85efb773ed2fdc01b5eda20ab61610b7fe7f15e0cc3f`. Report files preserve run timestamps, dataset hashes, expected/actual actions, reasons, sources, and per-case elapsed times. These live outcomes preceded a later change to quota-error messages and retry handling; decision and retrieval logic remain unchanged. The error-handling change was then checked with all 93 offline tests.
 
 The five supplied cases exercised damage evidence, eligible returns, delayed shipping, wrong items, and missing information. Their generated reasons and saved policy quotes were inspected. The browser check independently generated the ₹3,500 damage example, returned **REQUEST_PHOTOS**, displayed verified quotes, and retrieved the same saved result from History.
 
@@ -26,8 +26,8 @@ Coverage includes the ₹2,000 damage threshold and seven-day cutoff; the ₹3,0
 
 ## Engineering checks
 
-- **98.91% statement coverage of `src/`** (454 of 459 statements). The frontend file and scripts are outside this coverage denominator; separate tests exercise their behavior.
-- Ruff static checks and Python compilation passed. A clean extraction of the initial source ZIP also passed all 86 tests and Ruff. Subsequent live verification added reports, the selected-case data, and documentation; it did not change the application code.
+- **98.94% statement coverage of `src/`** (468 of 473 statements). The frontend file and scripts are outside this coverage denominator; separate tests exercise their behavior.
+- Ruff static checks and Python compilation passed. A clean extraction of the initial source ZIP also passed all 86 tests and Ruff. The latest quota-handling change passed the complete 93-test suite and Ruff. It changes error reporting and suppresses immediate quota retries.
 - All six original policy files, the 214-row historical CSV, data notes, and five supplied sample cases match the candidate pack byte for byte.
 - Browser checks verified registration/sign-in, populated examples, navigation, the missing-key error before configuration, and the real result/history after configuration.
 - Isolated automated UI-to-API tests also cover confidence/evidence rendering, history, and sign-out. Those test-provider results are separate from the real Gemini results above.
@@ -49,6 +49,12 @@ python -m scripts.evaluate --cases data/boundary_smoke_cases.json --output repor
 ```
 
 Each run uses your Gemini quota and creates a separate local evaluation account. Results may vary with the provider/model. The evaluator sends only declared ticket input fields, excluding expected actions, historical labels, and issue categories.
+
+## Subsequent quota incident
+
+After the successful suites and browser check, a real diagnostic request on 17 September 2026 received **429 RESOURCE_EXHAUSTED**, with `GenerateRequestsPerDayPerProjectPerModel-FreeTier` and quota value **20** for `gemini-2.5-flash`. Embedding access still succeeded. This identifies daily generation quota exhaustion rather than a missing key or general network failure. New decisions are blocked until quota becomes available; the next documented daily reset is 18 September 2026 at 12:30 PM IST.
+
+The provider now shows a specific daily-quota/reset message, keeps raw provider details private, and skips immediate retries for HTTP 429. Seven regression cases were added; the full **93-test** suite and Ruff passed. Successful live reports were preserved rather than overwritten with this later service failure.
 
 ## Candidate steps still pending
 

@@ -29,7 +29,7 @@ This project was developed with substantial assistance from OpenAI Codex, includ
 - Browser review found heading spacing obscured by Streamlit's header; the layout was adjusted.
 - A full UI-to-API result test found a checkmark that Streamlit did not accept as an emoji. It was replaced with a supported icon, and result/history rendering was retested.
 
-After the candidate privately configured their key, the agent ran real Gemini ingestion and evaluation: all five supplied cases and all 12 preselected additional cases passed, with no service errors. A browser check generated the damage example through Streamlit and reopened the saved result from History. No expected labels were supplied to the model, and no production-code changes were needed after these live results.
+After the candidate privately configured their key, the agent ran real Gemini ingestion and evaluation: all five supplied cases and all 12 preselected additional cases passed, with no service errors. A browser check generated the damage example through Streamlit and reopened the saved result from History. No expected labels were supplied to the model. A subsequent daily-quota incident exposed an overly generic error message: the provider now identifies daily quota exhaustion from structured metadata and avoids immediate HTTP 429 retries. Seven regression cases were added, and all 93 tests passed. Decision and retrieval logic did not change.
 
 See `reports/verification.md` for the executed checks and their limits. The remaining 28 additional cases were not executed. Test doubles live exclusively under `tests/`; they are not a production mode.
 

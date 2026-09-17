@@ -14,6 +14,8 @@ The local key, policy index, and live evaluation were verified on 17 September 2
 6. Use a browser window with readable text. Close secret files, hide notifications, and record only the application window. Keep the terminal test summary available in a second tab/window if desired.
 7. On macOS, use Shift–Command–5, choose the application/window region, and enable your microphone. Check a short audio sample first. These are preparation instructions; no recording has been created by this project.
 
+Daily quota note: the local free-tier project reached its 20-request generation limit after verification on 17 September. Reserve fresh quota for the recording; use saved results while practicing. The next documented daily reset is 18 September at 12:30 PM IST. Repeated Generate clicks before reset will not restore quota.
+
 ## Timing and narration
 
 | Time | On screen | Speak in your own words |
