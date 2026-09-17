@@ -7,7 +7,7 @@ Sources: the supplied five-page `AI_Engineering_Intern_Take_Home_Project.pdf`, t
 | Python end-to-end application | Python 3.12, `src/`, Streamlit frontend |
 | Streamlit Login / Register | Both forms in `streamlit_app.py`; registration/login UI test |
 | Authenticated New Decision | Ticket form, action, confidence, reason, sources, questions, JSON download |
-| Authenticated History and individual result | Paginated history, ticket selector, detail API call |
+| Authenticated History and individual result | Paginated history, ticket selector, detail API call, full message and all submitted order fields visible above the recommendation |
 | Frontend uses HTTP, not direct database access | `src/ui_client.py`; no database imports in the frontend |
 | FastAPI | `src/api.py`, OpenAPI at `/docs` |
 | POST /register | Unique normalized email, Argon2id password hash |
@@ -34,22 +34,24 @@ Sources: the supplied five-page `AI_Engineering_Intern_Take_Home_Project.pdf`, t
 | Structured AI decision | Pydantic action enum, reason, finite confidence, sources, evidence, questions |
 | Validate before storage | Pydantic plus chunk/quote/source checks, one repair attempt |
 | Insufficient information | `NEEDS_MORE_INFORMATION` with specific questions; outage is separately 503 |
-| Supplied sample evaluation | `python -m scripts.evaluate`, five original cases unchanged |
+| Supplied sample evaluation | `python -m scripts.evaluate`; all five unchanged cases passed on final Gemini 3.5 Flash-Lite; `reports/evaluation-current.json` |
 | Correct / incorrect / accuracy report | JSON and console, service errors separate and included in denominator |
 | Do not copy historical answers | CSV not in retrieval; strict request allowlist excludes all answer/issue labels |
 | Own API key; secrets excluded | Private setup script, `.env.example`, `.gitignore`, clean packaging |
-| Git / repository source | Git-ready source tree; distributable ZIP accepted by the email |
+| Git / repository source | Prepared for `Teja2000-byte/policy-desk`; clean ZIP retained as a backup |
 | README setup / usage | `README.md`, launch commands, configuration, troubleshooting, evaluation |
 | Database/schema deliverable | `src/database.py` plus generated `docs/schema.sql` |
 | Tests for important functionality | Tests under `tests/`, verification record under `reports/` |
 | Coding-agent disclosure | `DEVELOPMENT.md` |
 | Keep scope small and understandable | One backend, one frontend, one SQLite database; no extra app architecture |
-| Less than two-minute screen recording | Prepared script/checklist; candidate recording still required |
-| Verbal explanation while sharing screen | Candidate uses `docs/DEMO_SCRIPT.md` and studies `docs/STUDY_GUIDE.md` |
-| Drive shareable recording link | Pending recording and upload; no fabricated URL |
+| Less than two-minute screen recording | Completed and reviewed; selected MP4 is 112.70 seconds |
+| Verbal explanation while sharing screen | Candidate recorded narration about the architecture while demonstrating the app |
+| Drive shareable recording link | Candidate will upload the completed recording and provide the link; access verification pending |
 | Submission email subject | Template and checklist specify `ASSIGNMENT SUBMISSION: <Your Name>` |
 | Deadline | Sunday, 20 September 2026, as stated in the email; timezone/time not specified |
 
 ## Actual verification boundary
 
-The offline engineering checks use test doubles for Gemini; the production application always calls Gemini. On 17 September 2026, real Gemini ingestion succeeded, the five supplied cases passed, and 12 preselected additional cases passed, with no service errors. A browser check generated a decision through Streamlit and reopened it from History. See `reports/verification.md` for scope and saved reports. The remaining 28 additional cases were not executed. Candidate study, the narrated recording, Drive sharing, and submission remain to be completed.
+The final **Gemini 3.5 Flash-Lite** configuration passed all five supplied cases over real authenticated HTTP: **5 correct, 0 incorrect, 0 service errors, 100% accuracy on this set**. The run used 11 of the authorized 30 API calls and saved all five tickets and validated decisions. Exact S05 returned `NEEDS_MORE_INFORMATION` with specific questions. See `reports/evaluation-current.json` and `reports/verification.md`.
+
+The **110 passing offline tests** use provider doubles and establish engineering behavior, not Gemini accuracy. The historical five- and twelve-case live reports used Gemini 2.5 Flash and an earlier prompt; their scores are not attributed to the final model. The additional 12 cases were not rerun on the final model, and the other 28 additional cases were not executed. The narrated recording is complete. Repository publication, the candidate's Drive link, and the final email are the remaining delivery steps.

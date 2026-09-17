@@ -129,7 +129,17 @@ def test_provider_failure_is_503_not_a_fake_business_decision(client, headers, t
     assert client.get("/tickets", headers=headers).json()["total"] == 0
 
 
-def test_missing_information_is_saved(client, headers, ticket, provider):
+def test_missing_information_is_saved(client, headers, provider):
+    # Exact incomplete input from supplied S05; no hidden facts from the damage fixture.
+    ticket = {
+        "message": "I want to return this.",
+        "order_value_inr": 900,
+        "days_since_delivery": None,
+        "days_since_dispatch": None,
+        "product_type": "unknown",
+        "opened_status": "unknown",
+        "order_status": "delivered",
+    }
     provider.responses = [
         json.dumps(
             {
@@ -146,9 +156,14 @@ def test_missing_information_is_saved(client, headers, ticket, provider):
             }
         )
     ]
-    response = client.post("/tickets", headers=headers, json={**ticket, "message": "I want to return this."})
+    response = client.post("/tickets", headers=headers, json=ticket)
     assert response.status_code == 201
-    assert response.json()["decision"]["missing_information"]
+    saved = response.json()
+    assert saved["decision"]["action"] == "NEEDS_MORE_INFORMATION"
+    assert len(saved["decision"]["missing_information"]) == 3
+    assert client.get(f"/tickets/{saved['id']}", headers=headers).json() == saved
+    assert json.loads(provider.generated[0][1])["ticket"] == ticket
+    assert len(provider.generated) == 1
 
 
 @pytest.mark.parametrize(

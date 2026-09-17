@@ -1,43 +1,53 @@
-# Before submitting
+# Submission checklist
 
-Deadline stated in the invitation: **Sunday, 20 September 2026**. No cutoff time or timezone was provided; submit with a comfortable margin.
+Deadline in the invitation: **Sunday, 20 September 2026**. No exact cutoff time or timezone was provided; leave a comfortable margin.
 
-## Progress and remaining personal steps
+## What to send
 
-- [x] Configure your own Gemini API key locally and restart the backend.
-- [x] Run the real Gemini sample evaluation: **5/5 correct**, zero errors; saved in `reports/evaluation.json`.
-- [x] Run preselected additional boundaries: **12/12 correct**, zero errors; saved in `reports/boundary-evaluation.json`. The other 28 additional cases were not run.
-- [x] Generate a real result in Streamlit and reopen it from History.
-- [x] Restore local app startup and verify the browser sign-in screen after the servers stopped.
-- [ ] Read the study guide and explain the code without relying on memorized text.
-- [ ] Record your own under-two-minute narrated screen demonstration.
-- [ ] Upload the recording to Google Drive and verify the shareable viewer link.
-- [ ] Confirm your preferred full name for the email subject/signature.
-- [ ] Reply to the original email with the public GitHub link or project ZIP and the recording link.
+Reply to the original email with:
 
-## Finish in this order
+1. **One project delivery:** a public GitHub repository link **or** the project ZIP attached. The PDF asks for a repository; the submission email explicitly permits a ZIP as an alternative.
+2. **A Google Drive viewer link** to a screen recording strictly under two minutes, showing the running Streamlit application and your own brief verbal explanation.
+3. Subject: **`ASSIGNMENT SUBMISSION: <Your Full Name>`**.
 
-1. Study `docs/STUDY_GUIDE.md`, then rehearse `docs/DEMO_SCRIPT.md` in your own words.
-2. Once the main model's quota resets, sign in to your demo account and prepare the damage and missing-information examples. Avoid rerunning the full evaluation suites before recording.
-3. Record a 1:45–1:55 screen demonstration with your microphone enabled. Play it back and check that the interface and your explanation are clear.
-4. Upload the recording to Google Drive and test its viewer link in a signed-out/private browser.
-5. Attach `policy-desk-submission.zip` to your reply, add the recording link, replace the name placeholders, and send before the stated deadline. Do not send the localhost URL as the project submission; it only works on the computer running the app.
+No public deployment, slide deck, separate study-guide attachment, or API key is requested. The localhost URL is not a shareable project link.
 
-## Project packaging
+## Current readiness
 
-The email explicitly accepts a **public GitHub repository or a ZIP**. The source folder is ready for Git, and a source ZIP is provided. No repository has been published or email sent automatically.
+- [x] Implement the required Streamlit, FastAPI, JWT, SQLite, RAG, and structured-decision flow.
+- [x] Include source, pinned dependencies, README, `.env.example`, schema, policies/data, tests, an evaluation runner, and `DEVELOPMENT.md`.
+- [x] Complete historical live evaluations on Gemini 2.5 Flash: 5/5 supplied cases and 12/12 preselected additional cases. Preserve those reports with their model names.
+- [x] Confirm genuine user-created results on the current Gemini 3.5 Flash-Lite model, including a missing-delivery-date clarification. These manual results are not a full supplied-case benchmark.
+- [x] Align the source default and example configuration with the working local Flash-Lite model.
+- [x] Record the video with your own voice. The candidate selected the second recording, approximately 1 minute 53 seconds long.
+- [x] Review sampled screen frames, a local narration transcript, audio levels, and duration. A louder MP4 preserves the original screen footage; the candidate has confirmed the video is ready.
+- [x] Complete the final model/evaluation review: all five supplied cases passed on Gemini 3.5 Flash-Lite, including exact S05; 0 incorrect and 0 service errors. The approved run used 11 API requests. Actual results are in `reports/evaluation-current.json`.
+- [x] Check source/README/configuration consistency, compare all supplied files, verify the schema, scan publishable source and Git history for credentials, and validate a clean source package. Its fresh setup and all 110 offline tests passed; Ruff passed.
+- [ ] Upload the recording to Drive, set viewer access, and verify the link while signed out or in a private browser.
+- [x] Choose a public GitHub repository as the project delivery, under the candidate's `Teja2000-byte` account. Keep the ZIP as a backup.
+- [ ] Publish the finished project and verify that the public repository is accessible while signed out.
+- [ ] Confirm the candidate's full name and final email contents.
+- [ ] Reply to the original invitation before the deadline.
 
-The package should include source code, pinned dependencies, `.env.example`, original data and policies, tests, the evaluation runner, README, schema, and `DEVELOPMENT.md`. Exclude `.env`, credentials, local account databases, downloaded decision records, virtual environments, caches, and logs.
+## Agreed order of work
 
-To regenerate a clean ZIP after making changes:
+**Record first → review the video → finish evaluation and packaging checks → verify the Drive link → prepare and send the email.**
+
+The recording, its review, and the current-model evaluation are complete. The remaining work is final repository publication, Drive-link verification, and the submission email. Continue studying the architecture, JWT, database, RAG, validation, and limitations for the later technical discussion; the two-minute video does not need to teach all of those topics in detail.
+
+## Packaging and credentials
+
+Use your own Gemini key as requested by the brief, configured privately on your machine. Reviewers follow the README and supply their own credentials. Never attach a key or the local `.env`.
+
+The source package includes the schema, which creates the runtime SQLite database during setup. It excludes local accounts, password hashes, saved user tickets, private keys, JWT secrets, virtual environments, caches, and logs.
 
 ```bash
 python -m scripts.package
 ```
 
-For GitHub, create your public repository only after checking the staged files and ignored secrets. If you publish the ZIP contents, the required synthetic dataset is included. The original data notes explicitly say it contains no real customer information. Do not include any real customer tickets you later enter.
+The provided ZIP is a local artifact. No public repository has been published, no recording uploaded, and no submission email sent automatically.
 
-## Email draft to adapt after validation
+## Email draft — fill in only after final review
 
 Subject: `ASSIGNMENT SUBMISSION: <Your Full Name>`
 
@@ -49,11 +59,11 @@ Project: <Public GitHub URL, or state that the project ZIP is attached>
 
 Demo recording: <Verified Google Drive viewer link>
 
-The project implements a Streamlit interface, FastAPI endpoints, JWT authentication, SQLite persistence, and Gemini-based policy retrieval and structured decisions. The repository includes setup instructions, tests, an evaluation runner, and an AI-assisted development disclosure.
+Policy Desk implements a Streamlit interface, FastAPI endpoints, JWT authentication, SQLite persistence, and Gemini-based policy retrieval and structured recommendations. The project includes setup instructions, tests, an evaluation runner, and an AI-assisted development disclosure.
 
-I look forward to walking you through the implementation and design decisions.
+I look forward to discussing the implementation and design decisions.
 
 Best regards,
 <Your Full Name>
 
-Replace every placeholder before sending. Include an evaluation statistic only if it matches the saved live report. This draft has not been sent.
+Replace every placeholder before sending. No email has been sent.

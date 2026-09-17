@@ -8,9 +8,11 @@ Built for the MaxsorLabs AI & Backend Engineering Internship assessment. The six
 
 ## Quick start
 
-Use **Python 3.12**. Run these commands from the project folder:
+Use **Python 3.12**. Clone the repository, then run:
 
 ```bash
+git clone https://github.com/Teja2000-byte/policy-desk.git
+cd policy-desk
 python3.12 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements-dev.txt
@@ -31,7 +33,7 @@ Keep the terminal running while using the application. If the browser reports **
 1. Create an account, or sign in.
 2. Choose **New decision**, enter a ticket and known order facts, then generate.
 3. Review the action, reason, confidence, follow-up questions, and exact policy quotes.
-4. Open **History** to revisit a saved ticket and download its complete JSON record.
+4. Open **History** and choose a saved ticket. Its complete customer message and all six submitted order fields are visible above the recommendation, with missing values clearly labeled. You can also download the complete JSON record.
 
 The first decision builds the policy index. To prepare it before a demo:
 
@@ -43,7 +45,18 @@ Without a Gemini key, registration, login, and empty history work; decision gene
 
 ## Verification and evaluation
 
-Verified on **17 September 2026**: **106/106 offline tests**, **5/5 supplied cases with real Gemini**, and **12/12 preselected additional boundary/adversarial cases**, with zero live service errors. The live Streamlit result and saved history were also checked in a browser. These small, visible suites are smoke tests; they do not establish accuracy on unseen tickets. See [the full verification record](reports/verification.md).
+Verified on **17 September 2026**, using the final **Gemini 3.5 Flash-Lite** configuration:
+
+| Check | Result | Evidence |
+|---|---|---|
+| Supplied cases, real Gemini | **5 correct / 5 total; 0 incorrect; 0 errors; 100% accuracy on this set** | [Current evaluation](reports/evaluation-current.json) |
+| Missing-information case S05 | `NEEDS_MORE_INFORMATION`, with specific customer questions | Included in the same five-case run |
+| Offline engineering tests | **110 passed; 99.01% `src/` statement coverage** | [Verification record](reports/verification.md) |
+| Data and policies | All nine supplied files unchanged | Byte-for-byte comparison with the candidate pack |
+
+The live evaluation used **11 API requests**, below the approved cap of 30, and saved all five tickets and validated decisions. This is **accuracy on five visible supplied cases**, not a claim of 100% accuracy on unseen tickets. Confidence displayed in the UI is a separate, uncalibrated model estimate.
+
+[GitHub Actions](https://github.com/Teja2000-byte/policy-desk/actions/workflows/tests.yml) runs the offline suite and code checks without a Gemini key. Historical **5/5 supplied-case** and **12/12 additional-case** runs used Gemini 2.5 Flash and an earlier prompt; they are preserved separately and are not scores for the current model.
 
 ```bash
 # Offline engineering tests: no API key or paid model calls
@@ -51,10 +64,10 @@ python -m pytest --cov=src --cov-report=term-missing
 python -m ruff check .
 
 # Live evaluation: keep the backend running; uses your Gemini quota
-python -m scripts.evaluate
+python -m scripts.evaluate --output reports/evaluation-local.json --delay 15
 
 # The 12 preselected cases used in the recorded boundary run
-python -m scripts.evaluate --cases data/boundary_smoke_cases.json --output reports/boundary-evaluation.json --delay 20
+python -m scripts.evaluate --cases data/boundary_smoke_cases.json --output reports/boundary-local.json --delay 20
 
 # All 40 additional cases (not all were executed in the recorded run)
 python -m scripts.evaluate --cases data/extended_test_cases.json --output reports/extended-evaluation.json
@@ -69,15 +82,17 @@ Reports show total, correct, incorrect, errors, accuracy, per-case outcomes, mod
 
 See [verification status](reports/verification.md) for what was actually run, and [the requirement checklist](docs/REQUIREMENTS.md) for coverage of the brief.
 
-Optional alternate-model diagnostics are also preserved in `reports/evaluation-flash-lite.json` and `reports/evaluation-gemini-3.8-flash.json`. They include service failures and are not passing evaluations. The configured default remains the verified `gemini-2.5-flash`.
+The [verification record](reports/verification.md) separates the final result from historical evaluations and unsuccessful provider diagnostics. All saved reports retain their actual model names and outcomes.
+
+When `GEMINI_MODEL` selects Gemini 3.x, generation uses a low thinking level and leaves temperature at the provider default. Other models retain temperature 0.
 
 ## Gemini quota troubleshooting
 
 If a decision fails with a daily-quota message, wait for the daily reset at midnight Pacific Time. The key can be valid while generation quota is exhausted. The app preserves existing history and does not save a failed decision. It does not immediately retry HTTP 429; network/server failures retain one bounded retry. Check your project's active limits in [Google AI Studio](https://aistudio.google.com/usage?tab=rate-limit); limits vary by model and project.
 
-Provider failures show the failed step and Google HTTP status, with fixed guidance for rejected keys, permissions, missing models, quota, and server outages. Raw provider responses, credentials, and ticket text are never included in these messages or diagnostic logs. A configured key in `/health` confirms local setup only; it does not verify access to Gemini.
+Provider failures show the failed step and Google HTTP status, with fixed guidance for rejected keys, permissions, missing models, quota, and server outages. Raw provider responses, credentials, and ticket text are never included in these messages or diagnostic logs. A configured key in `/health` confirms local setup only; it does not verify access to Gemini. When Google reports high demand, the app explains that the model is busy and preserves saved History.
 
-During local verification on 17 September 2026, Gemini later reported a **20-request daily free-tier limit** for `gemini-2.5-flash`. The earlier successful reports remain valid records of those completed runs. Reserve quota for your demonstration instead of repeatedly rerunning the evaluation suites. [Google's reset documentation](https://ai.google.dev/gemini-api/docs/rate-limits).
+Provider access and quota depend on your own project and selected model. A different API key in the same project does not create an independent project quota. See [Google's rate-limit documentation](https://ai.google.dev/gemini-api/docs/rate-limits).
 
 ## How the pipeline works
 
@@ -153,7 +168,7 @@ Error responses use `{"detail": "..."}` (FastAPI validation errors use a structu
 |---|---|
 | `GEMINI_API_KEY` | Your own key; required for embeddings and decisions |
 | `JWT_SECRET` | Required random value, at least 32 characters; generated by setup |
-| `GEMINI_MODEL` | `gemini-2.5-flash` |
+| `GEMINI_MODEL` | `gemini-3.5-flash-lite` |
 | `EMBEDDING_MODEL` | `gemini-embedding-001`; this adapter uses its task-type semantics |
 | `EMBEDDING_DIMENSIONS` | `768` |
 | `JWT_EXPIRY_MINUTES` | `60` |
@@ -209,3 +224,5 @@ The evidence check permits whitespace-normalized exact excerpts, not arbitrary p
 - [AI-assisted development disclosure](DEVELOPMENT.md)
 
 Technical references: [Google Gen AI Python SDK](https://googleapis.github.io/python-genai/), [Gemini structured outputs](https://ai.google.dev/gemini-api/docs/structured-output), [Gemini embeddings](https://ai.google.dev/gemini-api/docs/embeddings). The implementation uses the SDK's `models.generate_content` API and validates the returned JSON independently.
+
+The narrated Streamlit demonstration accompanies the submission through Google Drive. It shows sign-in, a real generated recommendation with evidence, and saved History including a clarification result. No public application deployment is required; reviewers run the project locally with their own credentials.

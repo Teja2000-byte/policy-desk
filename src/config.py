@@ -11,7 +11,7 @@ class Settings(BaseSettings):
 
     gemini_api_key: SecretStr = SecretStr("")
     jwt_secret: SecretStr
-    gemini_model: str = "gemini-2.5-flash"
+    gemini_model: str = "gemini-3.5-flash-lite"
     embedding_model: str = "gemini-embedding-001"
     embedding_dimensions: int = Field(default=768, ge=128, le=3072)
     database_path: Path = ROOT / "storage/app.db"

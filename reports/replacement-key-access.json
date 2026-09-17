@@ -1,0 +1,19 @@
+{
+  "recorded_at": "2026-09-17T15:12:40.025088+00:00",
+  "model": "gemini-3.8-flash",
+  "prompt": "Reply with exactly: Hello",
+  "requests": 1,
+  "automatic_retries": 0,
+  "user_authorized": true,
+  "status": "SUCCESS",
+  "hello_received": true,
+  "elapsed_seconds": 25.47,
+  "usage": {
+    "prompt_token_count": 6,
+    "candidates_token_count": 1,
+    "thoughts_token_count": 84,
+    "total_token_count": 91
+  },
+  "scope": "Minimal access probe only. No ticket, policy context, or structured decision schema. Not an end-to-end evaluation.",
+  "remaining_quota": "UNKNOWN"
+}

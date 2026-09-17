@@ -1,0 +1,31 @@
+{
+  "checked_at": "2026-09-17T15:36:16.227413+00:00",
+  "case_id": "S05",
+  "model": "gemini-3.8-flash",
+  "scope": "Real retrieval and decision validation; no app account or saved ticket created.",
+  "automatic_retries": 0,
+  "maximum_requests": 2,
+  "request_timeout_seconds": 30,
+  "status": "FAILED",
+  "safe_error": "Google's Gemini service is temporarily unavailable or failed internally. Wait before trying again. Failed step: decision generation. Google HTTP status: 503.",
+  "requests": {
+    "policy retrieval embedding": 1,
+    "decision generation": 1
+  },
+  "events": [
+    {
+      "operation": "policy retrieval embedding",
+      "status": "SUCCESS",
+      "elapsed_seconds": 0.67
+    },
+    {
+      "operation": "decision generation",
+      "status": "GOOGLE_API_ERROR",
+      "google_http_status": 503,
+      "google_status": "UNAVAILABLE",
+      "google_message_redacted": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
+      "elapsed_seconds": 9.62
+    }
+  ],
+  "elapsed_seconds": 10.31
+}

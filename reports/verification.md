@@ -1,77 +1,61 @@
 # Verification record
 
-Checked on **17 September 2026**, using Python 3.12 on macOS. Machine-readable summary: [verification.json](verification.json).
+The final configuration uses **Gemini 3.5 Flash-Lite**, Python 3.12, and Gemini `gemini-embedding-001`. Checks completed on **17 September 2026**. See [verification.json](verification.json) for the machine-readable summary.
 
-## Observed results
+## Final results
 
 | Check | Result | Evidence |
 |---|---|---|
-| Offline engineering tests | **106 passed**, zero failures/errors | Automated test run; 99.00% `src/` statement coverage |
-| Real Gemini ingestion | **6 policies, 12 indexed chunks** | Persistent local Gemini embedding index |
-| Supplied live sample cases | **5/5 correct**, zero incorrect/errors | [evaluation.json](evaluation.json) |
-| Preselected additional live cases | **12/12 correct**, zero incorrect/errors | [boundary-evaluation.json](boundary-evaluation.json) |
-| Browser end-to-end check | Real damage decision generated, evidence displayed, saved result reopened from History | Streamlit → FastAPI → Gemini → SQLite → History |
+| Real Gemini, all five supplied cases | **5 correct, 0 incorrect, 0 errors; 100% accuracy on this set** | [Current evaluation](evaluation-current.json) |
+| Exact supplied missing-information case S05 | **NEEDS_MORE_INFORMATION**, with specific questions | Same evaluation, case S05 |
+| Persistence during the live run | **5 tickets and 5 validated decisions saved** | Evaluation persistence check |
+| Offline engineering tests | **110 passed**, no failures or errors | Full suite rerun after the final application changes |
+| Statement coverage of `src/` | **99.01% (499/504 statements)** | pytest-cov; frontend and scripts are outside this denominator |
+| Code checks | Ruff and Git whitespace checks passed | Local checks |
+| Supplied data | All **9 files unchanged**, including **6 policies** and the **214-row CSV** | Byte-for-byte comparison |
+| Schema | `docs/schema.sql` matches the canonical schema | Direct comparison with `src/database.py` |
+| Clean source package | Fresh no-key setup succeeded; **110 tests** and Ruff passed after extraction | Reviewer-style copy with no local account database or Gemini key |
+| Local policy index | **12 chunks**, 768-dimensional real Gemini vectors | Persistent SQLite index; matching policy fingerprint |
+| Narrated Streamlit demonstration | Selected video **112.70 seconds**, under two minutes | Candidate-confirmed final MP4 |
 
-Both live suites used **`gemini-2.5-flash`** and **`gemini-embedding-001`**. The policy fingerprint was `23f5194773eefe8def3b85efb773ed2fdc01b5eda20ab61610b7fe7f15e0cc3f`. Report files preserve run timestamps, dataset hashes, expected/actual actions, reasons, sources, and per-case elapsed times. These live outcomes preceded a later change to quota-error messages and retry handling; decision and retrieval logic remain unchanged. The error-handling change was then checked with all 93 offline tests.
+## Live evaluation method
 
-The five supplied cases exercised damage evidence, eligible returns, delayed shipping, wrong items, and missing information. Their generated reasons and saved policy quotes were inspected. The browser check independently generated the ₹3,500 damage example, returned **REQUEST_PHOTOS**, displayed verified quotes, and retrieved the same saved result from History.
+The unmodified `scripts.evaluate` runner registered and logged in through a real local HTTP server, then submitted the five original cases to the production FastAPI application. The real Gemini provider used the final model, current prompt, schema checks, citation checks, and normal bounded retry/repair behavior. Expected actions and historical labels were excluded from every request payload.
 
-## Additional evaluation scope
+A separate evaluation database contained only a copy of the unchanged policy embedding index before the run. This preserved the candidate's demonstration history while exercising real user creation, JWT issuance, retrieval, generation, validation, and SQLite persistence. An external request guard enforced the candidate's **30-call maximum**. The completed run used **11 calls: 5 query embeddings and 6 generation attempts**. No further Gemini calls were made after the suite. All five outcomes were correct; six generation attempts means this was not necessarily a single-attempt generation for every case.
 
-The 12-case subset was selected **before its execution** from the 40 additional cases, to keep live request volume bounded. Selection: **E01, E02, E03, E08, E09, E10, E12, E13, E23, E26, E29, E37**. Inputs are saved unchanged in `data/boundary_smoke_cases.json`.
+For exact S05, “I want to return this.”, Gemini asked for the reason for return, days since delivery, whether the product was opened, and the product type. The persisted output cited relevant clauses from the provided policies. Its sources, quotes, and questions were inspected after the run.
 
-Coverage includes the ₹2,000 damage threshold and seven-day cutoff; the ₹3,000 defect threshold and fourteen-day cutoff; the return window; shipping after ten days; late wrong-item reports; cancellation while processing; and an instruction-injection attempt embedded in a damaged-item ticket.
-
-**The other 28 additional cases were not executed.** The historical CSV diagnostic evaluation was also not run. Passing 5 supplied cases and 12 visible additional cases is evidence for these smoke tests, not a general accuracy estimate or a guarantee of resistance to prompt injection. Model confidence is self-reported and uncalibrated. Quote validation verifies that the evidence exists; it does not prove the interpretation is correct.
-
-## Engineering checks
-
-- **99.00% statement coverage of `src/`** (495 of 500 statements). The frontend file and scripts are outside this coverage denominator; separate tests exercise their behavior.
-- Ruff static checks and Python compilation passed. A clean extraction of the initial source ZIP also passed all 86 tests and Ruff. The latest quota-handling change passed the complete 93-test suite and Ruff. It changes error reporting and suppresses immediate quota retries.
-- All six original policy files, the 214-row historical CSV, data notes, and five supplied sample cases match the candidate pack byte for byte.
-- Browser checks verified registration/sign-in, populated examples, navigation, the missing-key error before configuration, and the real result/history after configuration.
-- Isolated automated UI-to-API tests also cover confidence/evidence rendering, history, and sign-out. Those test-provider results are separate from the real Gemini results above.
-- The private key helper preserved the JWT secret and private file permissions. No credentials or local account database are included in the source ZIP.
-- Before key configuration, the evaluator preflight correctly returned **NOT RUN**. After configuration, the actual live results replaced that earlier unverified status.
-
-The suite covers password hashing and normalization; required routes; expired, malformed, wrongly signed, wrong-audience, and unsigned tokens; Alice/Bob ownership isolation; request validation; history pagination; persistence across restart; transaction rollback; clarification questions; invalid output and repair; invented citations; provider timeout/retry behavior and sanitized errors; SDK configuration; embedding shape and normalization; policy chunk coverage; index reuse/invalidation; ranking and parent expansion; HTTP client behavior; frontend forms/results/history/logout; input label exclusion; and honest evaluation metrics.
-
-Two upstream test-framework deprecation warnings were emitted (Starlette/httpx and an AnyIO alias); they did not fail the checks. Direct dependencies are pinned in `requirements.txt` and `requirements-dev.txt`.
-
-## Reproduce live evaluation
-
-After configuring your own key and starting the backend, run from the project directory in an activated environment:
+To reproduce with your own key and a running backend:
 
 ```bash
-python -m scripts.ingest
-python -m scripts.evaluate --delay 15
-python -m scripts.evaluate --cases data/boundary_smoke_cases.json --output reports/boundary-evaluation.json --delay 20
+python -m scripts.evaluate --output reports/evaluation-local.json --delay 15
 ```
 
-Each run uses your Gemini quota and creates a separate local evaluation account. Results may vary with the provider/model. The evaluator sends only declared ticket input fields, excluding expected actions, historical labels, and issue categories.
+The first run on a clean installation builds the policy index and therefore uses additional embedding requests. The recorded run reused its matching index. Results and provider availability can vary; this command is not a guarantee of the same number of requests.
 
-## Subsequent quota incident
+## What the offline checks cover
 
-After the successful suites and browser check, a real diagnostic request on 17 September 2026 received **429 RESOURCE_EXHAUSTED**, with `GenerateRequestsPerDayPerProjectPerModel-FreeTier` and quota value **20** for `gemini-2.5-flash`. Embedding access still succeeded. This identifies daily generation quota exhaustion rather than a missing key or general network failure. New decisions are blocked until quota becomes available; the next documented daily reset is 18 September 2026 at 12:30 PM IST.
+The suite verifies registration and password hashing; required routes; valid, expired, malformed, wrongly signed, wrong-audience, and unsigned JWTs; Alice/Bob ownership isolation; input validation; pagination; persistence across restarts; transactional rollback; normal clarification output; invalid JSON and repair; invented citations; provider failure classification and bounded retries; SDK settings; embedding dimensions and normalization; chunk coverage; index reuse/invalidation; ranking and parent expansion; frontend HTTP calls; result/history rendering; logout; label exclusion; and honest evaluation metrics.
 
-The provider now shows a specific daily-quota/reset message, keeps raw provider details private, and skips immediate retries for HTTP 429. Seven regression cases were added; the full **93-test** suite and Ruff passed. Successful live reports were preserved rather than overwritten with this later service failure.
+These tests use isolated provider doubles. They test engineering behavior and do not establish Gemini accuracy. GitHub Actions runs this same offline suite without a Gemini key. Two local framework deprecation warnings did not fail the tests.
 
-## Candidate steps still pending
+The packaged source was extracted into a new folder and configured with the documented setup helper using `--no-key`. All 110 tests and Ruff passed there as well. The checks reused the installed Python environment; the GitHub workflow separately installs dependencies on a Linux runner. Local Markdown links were checked, the ZIP matched all 64 publishable source/documentation files at this stage, and the credential scan found no current secrets or checked common credential patterns. Ignored `.env`, databases, and runtime files were absent from the source package.
 
-Study and explain the implementation, create the under-two-minute narrated screen recording, upload it to Drive with a verified viewer link, and send the final email. The source ZIP is a local deliverable, not a published GitHub repository. See [the demo script](../docs/DEMO_SCRIPT.md) and [submission checklist](../docs/SUBMISSION_CHECKLIST.md).
+## Historical results and failures
 
-## Local launch recovery and alternative-model checks
+Earlier **Gemini 2.5 Flash** runs passed [5/5 supplied cases](evaluation.json) and [12/12 preselected additional cases](boundary-evaluation.json). Those results used an earlier model and prompt. They are preserved as historical evidence and are not included in the final model's five-case score.
 
-Later on 17 September, neither local server was running, so the browser showed "site cannot be reached." The prepared Mac workspace now includes a double-click launcher outside the submission source tree. It starts `python run.py` in Terminal independently of the temporary development command session. Both health endpoints returned HTTP 200, and the sign-in screen was visibly verified in the browser. Keep the launcher Terminal open while using the app. The reviewer uses the portable README setup.
+Unsuccessful alternate-model checks are retained in [the 2.5 Flash-Lite report](evaluation-flash-lite.json) and [the 3.8 Flash report](evaluation-gemini-3.8-flash.json). An earlier exact-S05 request to Gemini 3.8 Flash failed with Google HTTP 503 and a high-demand message; see [the diagnostic](missing-information-diagnostic.json). The final 3.5 Flash-Lite run succeeded on that same supplied case. Prior failures are not relabeled as successful runs.
 
-Two optional alternative-model checks were performed without changing the main app's configuration or billing. `gemini-2.5-flash-lite` metadata was accessible, but generation returned 404 NOT_FOUND; its five-case report records service errors rather than incorrect recommendations. `gemini-3.8-flash` answered an initial access probe but produced intermittent 503 UNAVAILABLE errors in the actual ticket pipeline. Its eight-case report includes the five supplied cases plus preselected E01, E09, and E37. The saved reports preserve unsuccessful attempts instead of presenting them as passing.
+The [historical timeline](verification-history.md) records the development checks and provider incidents. Its intermediate statuses are historical; this page and `evaluation-current.json` describe the final configuration.
 
-The main application therefore remains on the previously verified `gemini-2.5-flash`. The earlier 5/5 and 12/12 results apply to that model and those completed runs. The alternate model reports are diagnostics, not grounds for replacing it or claiming it is more reliable. The same 28 extended cases remain unexecuted; the three selected for the alternate check were already among the 12 earlier boundaries.
+## Limits of the evidence
 
-## Replacement-key troubleshooting
+- Five visible supplied cases are a smoke test, not an estimate of accuracy on unseen support tickets.
+- The 12 additional cases were not rerun on the final model. The other 28 additional cases and the historical CSV diagnostic were not executed.
+- Valid quotations demonstrate that cited text exists, not that every interpretation is correct.
+- Model confidence is self-reported and uncalibrated. Prompt-injection resistance is not guaranteed.
+- The source excludes `.env`, API keys, JWT secrets, local accounts/tickets, virtual environments, and logs. Reviewers supply their own credentials.
 
-After the candidate replaced the local key and reported another generic error, local inspection confirmed that Settings reads the configured file, the key is nonempty with no whitespace or duplicate declaration, and the private file permissions remain 0600. This does not establish whether Google accepts that key.
-
-The provider now reports the failed operation and Google HTTP status, using fixed messages for authentication, permissions, missing resources/models, invalid setup/request, quota, and server errors. Diagnostic logs contain only operation and status. Thirteen regression cases brought the full offline suite to **106 passing tests**, with **99.00% `src/` statement coverage** (495/500), and Ruff passed. Both local services were restarted and their health endpoints returned 200.
-
-**No Gemini requests were made during this troubleshooting turn.** The replacement key's validity, access, remaining quota, and exact cause of the user-reported failure remain unconfirmed pending a user-initiated attempt with the improved error details. Historical successful evaluation reports remain unchanged.
+The recording review used sampled screen frames, a local automatic transcript, duration, and audio-level measurements; it was not a direct listening assessment. The candidate confirmed the recording is ready. The source repository and the Google Drive recording are separate submission deliverables.

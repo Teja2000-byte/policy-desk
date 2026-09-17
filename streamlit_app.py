@@ -1,6 +1,7 @@
 import json
 import os
 from datetime import datetime
+from html import escape
 
 import streamlit as st
 
@@ -23,6 +24,7 @@ st.markdown(
  .stButton>button[kind="primary"], .stFormSubmitButton>button[kind="primary"] {border-radius:8px;}
  .quiet {font-size:13px;color:#7b8693;line-height:1.65;}
  .stAlert {border-radius:10px;}
+ .ticket-message {white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.65;margin-bottom:1rem;}
  </style>""",
     unsafe_allow_html=True,
 )
@@ -48,8 +50,42 @@ def api(method, path, payload=None, params=None):
         raise
 
 
-def display_result(ticket):
+def display_ticket(ticket):
+    with st.container(border=True):
+        st.markdown("#### Submitted ticket")
+        st.caption(f"TICKET #{ticket['id']:04d}")
+        st.markdown("**Customer’s message**")
+        # Preserve the complete message and line breaks without interpreting customer HTML or Markdown.
+        st.markdown(f'<div class="ticket-message">{escape(ticket["message"])}</div>', unsafe_allow_html=True)
+        st.markdown("**Order details**")
+        fields = [
+            (
+                "Order value",
+                "Not provided" if ticket["order_value_inr"] is None else f"₹{ticket['order_value_inr']:,.2f}",
+            ),
+            (
+                "Days since delivery",
+                "Not provided" if ticket["days_since_delivery"] is None else str(ticket["days_since_delivery"]),
+            ),
+            (
+                "Days since dispatch",
+                "Not provided" if ticket["days_since_dispatch"] is None else str(ticket["days_since_dispatch"]),
+            ),
+            ("Product type", ticket["product_type"].replace("non_food", "non-food").capitalize()),
+            ("Opened status", ticket["opened_status"].capitalize()),
+            ("Order status", ticket["order_status"].replace("_", " ").capitalize()),
+        ]
+        columns = st.columns(3)
+        for index, (label, value) in enumerate(fields):
+            with columns[index % 3]:
+                st.caption(label)
+                st.write(value)
+
+
+def display_result(ticket, *, show_ticket=False):
     decision = ticket["decision"]
+    if show_ticket:
+        display_ticket(ticket)
     st.markdown("---")
     st.caption(f"DECISION / TICKET #{ticket['id']:04d}")
     title = decision["action"].replace("_", " ").capitalize()
@@ -79,21 +115,8 @@ def display_result(ticket):
             st.write(evidence["quote"])
             st.caption("Quote verified against the retrieved policy text.")
     with st.expander("Decision details"):
-        st.write("**Submitted ticket**")
-        st.write(ticket["message"])
-        st.json(
-            {
-                key: ticket[key]
-                for key in (
-                    "order_value_inr",
-                    "days_since_delivery",
-                    "days_since_dispatch",
-                    "product_type",
-                    "opened_status",
-                    "order_status",
-                )
-            }
-        )
+        if not show_ticket:
+            display_ticket(ticket)
         st.caption(
             f"Model: {decision['model']} · Policy version: {decision['policy_version'][:12]} · Saved: {decision['created_at']}"
         )
@@ -340,8 +363,10 @@ else:
                 list(by_id),
                 format_func=lambda value: (
                     f"#{value:04d} · {datetime.fromisoformat(by_id[value]['created_at']).strftime('%d %b %H:%M')} · {by_id[value]['message'][:80]}"
+                    + ("…" if len(by_id[value]["message"]) > 80 else "")
                 ),
             )
-            display_result(api("GET", f"/tickets/{selected_id}"))
+            st.caption("Read the complete customer message and submitted order details below.")
+            display_result(api("GET", f"/tickets/{selected_id}"), show_ticket=True)
     except APIError as exc:
         st.error(str(exc))

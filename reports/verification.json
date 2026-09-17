@@ -1,118 +1,107 @@
 {
-  "checked_at": "2026-09-17T14:52:56.401066+00:00",
+  "checked_at": "2026-09-17T18:21:59.139774+00:00",
   "python": "3.12.14",
   "platform": "Darwin",
+  "current_default_model": "gemini-3.5-flash-lite",
   "offline_tests": {
-    "total": 106,
-    "passed": 106,
+    "total": 110,
+    "passed": 110,
     "failures": 0,
     "errors": 0,
-    "src_statement_coverage_percent": 99.0
+    "src_statements_covered": 499,
+    "src_statements_total": 504,
+    "src_statement_coverage_percent": 99.01,
+    "ruff": "PASSED"
   },
-  "live_gemini_evaluation": {
+  "current_live_evaluation": {
     "status": "PASSED",
-    "report": "reports/evaluation.json",
+    "report": "reports/evaluation-current.json",
     "total": 5,
     "correct": 5,
     "incorrect": 0,
     "errors": 0,
     "accuracy": 1.0,
-    "model": "gemini-2.5-flash",
+    "model": "gemini-3.5-flash-lite",
     "embedding_model": "gemini-embedding-001",
-    "timestamp": "2026-09-17T11:08:37.165608+00:00",
+    "timestamp": "2026-09-17T18:20:10.051611+00:00",
     "dataset": "sample_test_cases.json",
-    "dataset_sha256": "d6f9e2f8d5e843b40699242825e5fedd7db47e8e4b19e65beee9f243f38f476a"
+    "dataset_sha256": "d6f9e2f8d5e843b40699242825e5fedd7db47e8e4b19e65beee9f243f38f476a",
+    "request_budget": {
+      "maximum_requests": 30,
+      "requests_attempted": 11,
+      "by_operation": {
+        "policy retrieval embedding": 5,
+        "decision generation": 6
+      }
+    },
+    "persistence_check": {
+      "tickets_saved": 5,
+      "decisions_saved": 5
+    }
   },
-  "original_pack_integrity": "All six policies, tickets.csv, sample_test_cases.json and DATA_NOTES.md match byte-for-byte.",
-  "recording": {
-    "status": "PENDING_CANDIDATE_RECORDING",
-    "script": "docs/DEMO_SCRIPT.md"
+  "original_pack_integrity": {
+    "files": 9,
+    "policies": 6,
+    "historical_tickets": 214,
+    "sample_cases": 5,
+    "result": "All supplied files match byte-for-byte."
   },
-  "live_boundary_evaluation": {
-    "status": "PASSED",
-    "report": "reports/boundary-evaluation.json",
-    "total": 12,
-    "correct": 12,
-    "incorrect": 0,
-    "errors": 0,
-    "accuracy": 1.0,
-    "model": "gemini-2.5-flash",
-    "embedding_model": "gemini-embedding-001",
-    "timestamp": "2026-09-17T11:15:15.226609+00:00",
-    "dataset": "boundary_smoke_cases.json",
-    "dataset_sha256": "f60d1202bc636c16aaa6a9371d13b0c696e0c783bf86265024c7e5a0d5acaae6"
-  },
+  "schema_snapshot": "MATCHES_SRC_DATABASE_SCHEMA",
   "index": {
     "policies": 6,
     "chunks": 12,
     "policy_version": "23f5194773eefe8def3b85efb773ed2fdc01b5eda20ab61610b7fe7f15e0cc3f"
   },
-  "browser_live_check": {
-    "status": "PASSED",
-    "actual_action": "REQUEST_PHOTOS",
-    "generated_in_streamlit": true,
-    "policy_evidence_rendered": true,
-    "saved_result_reopened_from_history": true
-  },
-  "evaluation_scope": {
-    "additional_cases_available": 40,
-    "additional_cases_executed": 12,
-    "remaining_additional_cases_not_run": 28,
-    "historical_diagnostic_run": false,
-    "limitation": "Visible smoke suites; not an estimate of unseen-ticket accuracy."
-  },
-  "subsequent_provider_status": {
-    "status": "DAILY_GENERATION_QUOTA_EXHAUSTED",
-    "http_code": 429,
-    "model": "gemini-2.5-flash",
-    "quota_id": "GenerateRequestsPerDayPerProjectPerModel-FreeTier",
-    "quota_value": 20,
-    "embedding_access": "OK",
-    "checked_at": "2026-09-17T11:23:23.789763+00:00",
-    "next_documented_daily_reset": "2026-09-18T00:00:00-07:00",
-    "handling": "Specific safe quota message; no immediate retry on HTTP 429.",
-    "historical_live_reports_preserved": true
-  },
-  "local_launch_recovery": {
-    "status": "VERIFIED",
-    "backend_http_status": 200,
-    "frontend_http_status": 200,
-    "browser_sign_in_screen_verified": true,
-    "launch_method": "Prepared Mac Terminal shortcut; keep its Terminal open.",
-    "main_model_unchanged": "gemini-2.5-flash"
-  },
-  "alternate_model_diagnostics": [
+  "historical_evaluations": [
     {
-      "report": "reports/evaluation-flash-lite.json",
-      "model": "gemini-2.5-flash-lite",
+      "report": "reports/evaluation.json",
+      "model": "gemini-2.5-flash",
       "total": 5,
-      "correct": 0,
-      "incorrect": 0,
-      "errors": 5,
-      "accuracy": 0.0,
-      "timestamp": "2026-09-17T14:14:20.153541+00:00",
-      "selected_as_default": false
+      "correct": 5
     },
     {
-      "report": "reports/evaluation-gemini-3.8-flash.json",
-      "model": "gemini-3.8-flash",
-      "total": 8,
-      "correct": 2,
-      "incorrect": 0,
-      "errors": 6,
-      "accuracy": 0.25,
-      "timestamp": "2026-09-17T14:20:12.189456+00:00",
-      "selected_as_default": false
+      "report": "reports/boundary-evaluation.json",
+      "model": "gemini-2.5-flash",
+      "total": 12,
+      "correct": 12
     }
   ],
-  "replacement_key_troubleshooting": {
-    "local_configuration_checked": true,
-    "key_file_private_mode": "0600",
-    "configured_model": "gemini-2.5-flash",
-    "backend_http_status": 200,
-    "frontend_http_status": 200,
-    "agent_gemini_requests_in_this_troubleshooting_turn": 0,
-    "provider_access_status": "UNCONFIRMED_PENDING_USER_ATTEMPT",
-    "change": "Safe specific guidance with failed operation and Google HTTP status."
+  "evaluation_limitations": [
+    "Five visible supplied cases, not an unseen-ticket benchmark.",
+    "Additional 12-case live suite was historical and was not rerun on the final model.",
+    "Other 28 additional cases and historical CSV diagnostic were not executed.",
+    "Confidence is not measured accuracy; quote validation does not prove interpretation."
+  ],
+  "recording": {
+    "status": "REVIEWED_CANDIDATE_CONFIRMED_READY",
+    "script": "docs/DEMO_SCRIPT.md",
+    "selected_recording": "Second recording: 2026-09-17 23:29:58",
+    "original_duration_seconds": 112.633333,
+    "selected_mp4_duration_seconds": 112.7,
+    "review_method": "Sampled frames, local automatic transcript, duration and audio-level measurements; not direct listening.",
+    "video_stream_unchanged": true,
+    "drive_upload_status": "PENDING"
+  },
+  "engineering_requirements": "docs/REQUIREMENTS.md",
+  "history": "reports/verification-history.md",
+  "remaining_delivery_steps": [
+    "Public repository publication and anonymous verification",
+    "Candidate-provided Google Drive link and access check",
+    "Candidate-approved submission email"
+  ],
+  "clean_source_package": {
+    "files": 64,
+    "setup_without_gemini_key": "PASSED",
+    "offline_tests_passed": 110,
+    "ruff": "PASSED",
+    "zip_matches_source": true,
+    "private_runtime_files_included": false,
+    "environment": "Fresh source extraction; existing installed Python environment."
+  },
+  "publication_audit": {
+    "source_files_scanned": 64,
+    "current_secrets_and_checked_credential_pattern_findings": 0,
+    "broken_local_markdown_links": 0,
+    "github_actions_workflow": ".github/workflows/tests.yml"
   }
 }

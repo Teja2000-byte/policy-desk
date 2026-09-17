@@ -49,7 +49,11 @@ def test_malformed_embeddings_fail_closed(settings, values):
         provider.embed(["Policy"], "RETRIEVAL_DOCUMENT")
 
 
-def test_gemini_call_passes_json_schema_and_separate_system_prompt(settings):
+@pytest.mark.parametrize("model", [
+    "gemini-2.5-flash", "gemini-3.5-flash-lite", "gemini-3.8-flash", "models/gemini-3.8-flash",
+])
+def test_gemini_call_passes_json_schema_and_separate_system_prompt(settings, model):
+    settings = settings.model_copy(update={"gemini_model": model})
     provider = make_provider(settings)
     calls = []
 
@@ -64,6 +68,13 @@ def test_gemini_call_passes_json_schema_and_separate_system_prompt(settings):
     assert config.system_instruction == "system policy"
     assert "action" in config.response_json_schema["properties"]
     assert calls[0]["contents"] == "ticket input"
+    assert calls[0]["model"] == model
+    if "gemini-3" in model:
+        assert config.temperature is None
+        assert config.thinking_config.thinking_level.value == "LOW"
+    else:
+        assert config.temperature == 0
+        assert config.thinking_config is None
 
 
 def test_transient_failure_retried_once(settings, monkeypatch):
@@ -198,3 +209,23 @@ def test_embedding_failure_is_identified_without_generating_a_decision(settings)
     provider.client.models.embed_content = embed
     with pytest.raises(ProviderUnavailable, match="policy retrieval embedding"):
         provider.embed(["sample ticket"], "RETRIEVAL_QUERY")
+
+
+def test_model_overload_is_explained_without_exposing_provider_details(settings, monkeypatch, caplog):
+    provider = make_provider(settings)
+    monkeypatch.setattr("src.provider.time.sleep", lambda _: None)
+    calls = []
+
+    def generate():
+        calls.append(1)
+        raise errors.ServerError(503, {"error": {
+            "status": "UNAVAILABLE",
+            "message": "This model is currently experiencing high demand. private-key-and-ticket-data",
+        }})
+
+    with pytest.raises(ProviderUnavailable) as exc:
+        provider._call(generate, operation="decision generation")
+    assert len(calls) == 2
+    assert "busy due to high demand" in str(exc.value)
+    assert "Google HTTP status: 503" in str(exc.value)
+    assert "private-key-and-ticket-data" not in str(exc.value) + caplog.text

@@ -1,0 +1,90 @@
+{
+  "total": 5,
+  "correct": 5,
+  "incorrect": 0,
+  "errors": 0,
+  "accuracy": 1.0,
+  "results": [
+    {
+      "case_id": "S01",
+      "expected_action": "REQUEST_PHOTOS",
+      "actual_action": "REQUEST_PHOTOS",
+      "correct": true,
+      "reason": "The non-food order arrived damaged 1 day ago (within the 7-day reporting window) and has a value of ₹3,500, which is above ₹2,000. According to the damaged goods policy, photographs of the damaged product and packaging must be requested before a refund or replacement is approved.",
+      "sources": [
+        "damaged_goods.md"
+      ],
+      "policy_version": "23f5194773eefe8def3b85efb773ed2fdc01b5eda20ab61610b7fe7f15e0cc3f",
+      "latency_ms": 4210
+    },
+    {
+      "case_id": "S02",
+      "expected_action": "APPROVE_RETURN",
+      "actual_action": "APPROVE_RETURN",
+      "correct": true,
+      "reason": "The customer is returning an unopened non-food product 10 days after delivery, which satisfies the return policy window of 14 calendar days for such items.",
+      "sources": [
+        "returns.md"
+      ],
+      "policy_version": "23f5194773eefe8def3b85efb773ed2fdc01b5eda20ab61610b7fe7f15e0cc3f",
+      "latency_ms": 2140
+    },
+    {
+      "case_id": "S03",
+      "expected_action": "OPEN_SHIPPING_INVESTIGATION",
+      "actual_action": "OPEN_SHIPPING_INVESTIGATION",
+      "correct": true,
+      "reason": "The customer's order was dispatched 9 days ago and has not yet arrived. According to the shipping policy, if an order has not arrived 8 to 10 days after dispatch, a shipping investigation should be opened.",
+      "sources": [
+        "shipping.md"
+      ],
+      "policy_version": "23f5194773eefe8def3b85efb773ed2fdc01b5eda20ab61610b7fe7f15e0cc3f",
+      "latency_ms": 2343
+    },
+    {
+      "case_id": "S04",
+      "expected_action": "REPLACE_CORRECT_ITEM",
+      "actual_action": "REPLACE_CORRECT_ITEM",
+      "correct": true,
+      "reason": "The customer received the wrong flavor (chocolate instead of strawberry) and reported it 2 days after delivery, which is within the 7-day reporting window for wrong items. Therefore, they are eligible for a replacement of the correct item.",
+      "sources": [
+        "wrong_item.md"
+      ],
+      "policy_version": "23f5194773eefe8def3b85efb773ed2fdc01b5eda20ab61610b7fe7f15e0cc3f",
+      "latency_ms": 2337
+    },
+    {
+      "case_id": "S05",
+      "expected_action": "NEEDS_MORE_INFORMATION",
+      "actual_action": "NEEDS_MORE_INFORMATION",
+      "correct": true,
+      "reason": "The customer wants to return an item, but the reason for return (e.g., change of mind, defect, damage), opened status, product type, and days since delivery are unspecified, which are necessary to determine eligibility under the applicable policies.",
+      "sources": [
+        "returns.md",
+        "defective_products.md",
+        "damaged_goods.md"
+      ],
+      "policy_version": "23f5194773eefe8def3b85efb773ed2fdc01b5eda20ab61610b7fe7f15e0cc3f",
+      "latency_ms": 2550
+    }
+  ],
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "embedding_model": "gemini-embedding-001",
+  "timestamp": "2026-09-17T18:20:10.051611+00:00",
+  "dataset": "sample_test_cases.json",
+  "dataset_sha256": "d6f9e2f8d5e843b40699242825e5fedd7db47e8e4b19e65beee9f243f38f476a",
+  "request_budget": {
+    "maximum_requests": 30,
+    "requests_attempted": 11,
+    "by_operation": {
+      "policy retrieval embedding": 5,
+      "decision generation": 6
+    }
+  },
+  "execution": "Unmodified evaluation runner over real local HTTP against the production app and real Gemini provider, with an external 30-request guard and a fresh database containing only the unchanged policy embedding index.",
+  "persistence_check": {
+    "tickets_saved": 5,
+    "decisions_saved": 5
+  }
+}

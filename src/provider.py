@@ -69,6 +69,12 @@ def api_error_message(exc: errors.APIError) -> str:
         return "Google rejected the request. Check API-key validity and the model's supported request settings."
     if exc.code == 504:
         return "Google's Gemini service timed out. Wait before trying again."
+    message = payload.get("message", "")
+    if exc.code == 503 and isinstance(message, str) and "high demand" in message.lower():
+        return (
+            "Google's Gemini model is busy due to high demand. Please try again later. "
+            "Saved decisions remain available in History."
+        )
     if isinstance(exc.code, int) and exc.code >= 500:
         return "Google's Gemini service is temporarily unavailable or failed internally. Wait before trying again."
     return "Google rejected the Gemini request. Check the backend model configuration and project access."
@@ -140,13 +146,16 @@ class GeminiProvider:
             raise ProviderUnavailable("Gemini returned an invalid embedding response.") from None
 
     def generate(self, system: str, prompt: str) -> str:
+        # Gemini 3.x recommends default sampling; retain the evaluated 2.5 setting.
+        gemini_3 = self.settings.gemini_model.removeprefix("models/").startswith("gemini-3")
         response = self._call(
             lambda: self.client.models.generate_content(
                 model=self.settings.gemini_model,
                 contents=prompt,
                 config=types.GenerateContentConfig(
                     system_instruction=system,
-                    temperature=0,
+                    temperature=None if gemini_3 else 0,
+                    thinking_config=types.ThinkingConfig(thinking_level="low") if gemini_3 else None,
                     max_output_tokens=4096,
                     response_mime_type="application/json",
                     response_json_schema=DecisionOutput.model_json_schema(),

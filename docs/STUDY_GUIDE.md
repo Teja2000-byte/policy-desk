@@ -14,7 +14,7 @@ Use the sample: **“My ₹3,500 order arrived damaged yesterday.”** Known fac
 
 1. Streamlit collects the message and optional order facts. It does not open SQLite or import the database module.
 2. `src/ui_client.py` sends JSON to `POST /tickets`. The JWT is in the `Authorization` header, not the URL.
-3. FastAPI validates `TicketInput`. For example, negative days, fractional days, unknown field names, and blank messages are rejected.
+3. FastAPI validates `TicketInput`. It rejects invalid values such as negative or fractional days, unsupported extra field names, and blank messages. Missing optional facts are allowed: blank day fields become `null`, and values such as `product_type: "unknown"` are valid. An unsupported field name is different from an unknown value in an allowed field.
 4. The authentication dependency validates the token and finds the user. The client cannot provide `user_id` to choose someone else as owner.
 5. The retriever checks whether the policy fingerprint matches the saved index. It embeds policies only if needed.
 6. Gemini embeds the ticket. NumPy compares that query vector with stored chunk vectors.
@@ -139,11 +139,24 @@ These checks address different failure modes. Correct JSON can still contain a f
 
 Return `NEEDS_MORE_INFORMATION`, explain what is missing, and ask specific questions. Null values stay unknown. The message may contain an explicit fact even when the corresponding form field is unknown. If the message and a populated field conflict, the prompt asks the model to clarify.
 
+### Invalid input versus missing information
+
+| Input or outcome | What the application does |
+|---|---|
+| `days_since_delivery: -2` or `1.5` | Rejects invalid days with HTTP 422 before calling Gemini. |
+| An unsupported field name such as `customer_age` | Rejects the extra field with HTTP 422. This is what "unknown field names" means. |
+| An empty or whitespace-only customer message | Rejects it with HTTP 422. The trimmed message must contain at least five characters. |
+| `days_since_delivery: null` or `product_type: "unknown"` | Accepts these missing optional facts and proceeds to retrieval and generation. |
+| "I want to return this." with unknown product type, package status, and delivery date | Valid supplied case S05. Gemini should return `NEEDS_MORE_INFORMATION` with the required questions. A validated result is saved normally with HTTP 201. |
+| Google reports HTTP 503 while generating | A provider failure, not an input-validation rejection or a clarification result. No decision is saved. |
+
+The short return message is vague, but it is not blank. Insufficient facts are an expected business outcome; invalid input and provider unavailability are separate errors. An earlier Gemini 3.8 diagnostic returned a high-demand error. The final Gemini 3.5 Flash-Lite evaluation successfully handled exact S05 with `NEEDS_MORE_INFORMATION`; see `reports/evaluation-current.json`.
+
 Do not ask every question on every ticket. For example, a clearly out-of-window damage claim can be rejected without knowing the order value. Product type matters for change-of-mind returns but does not automatically disqualify an eligible damage report.
 
 ### What if Gemini fails?
 
-An unavailable key, quota issue, provider failure, or network timeout produces a clear service error. It must not be disguised as “the customer needs to provide more information.” A malformed or unsupported answer gets one repair attempt, then 502 with nothing saved. Transient 429/5xx/network failures get at most one retry per provider operation; authentication/configuration errors are not repeatedly retried.
+An unavailable key, quota issue, provider failure, or network timeout produces a clear service error. It must not be disguised as “the customer needs to provide more information.” A malformed or unsupported answer gets one repair attempt, then 502 with nothing saved. Transient 5xx/network failures get at most one retry per provider operation. HTTP 429 quota failures and authentication/configuration errors are not immediately retried.
 
 ### Prompt injection
 
@@ -181,6 +194,8 @@ The runner compares the returned action with the expected action for each case. 
 
 Expected labels are used after inference for scoring. They are never included in the input request. The historical CSV is an optional diagnostic dataset, not a lookup table or training set. All five provided sample cases are visible, so even perfect performance on them would be a smoke-test result, not evidence of performance on unseen tickets.
 
+**Final measured result:** Gemini 3.5 Flash-Lite correctly answered all five supplied cases: 5 correct, 0 incorrect, 0 service errors, 100% accuracy on that set. The run used 11 Gemini API requests and saved all five decisions. Exact S05 asked for the reason for return, delivery age, opened status, and product type. The historical 12/12 additional-case result used Gemini 2.5 Flash; those additional cases were not rerun on the final model.
+
 When a case fails, inspect the input, retrieved policies, returned reason, and actual policy clause. Diagnose retrieval failure, missing/contradictory facts, model reasoning, output validation, or provider failure before changing the code. Never quietly change the expected answer merely to raise the score.
 
 ## 10. Likely technical discussion questions
@@ -203,7 +218,7 @@ When a case fails, inspect the input, retrieved policies, returned reason, and a
 
 **What happens if a user closes the page during generation?** The backend may still finish and save. A retry can create another ticket because this version has no idempotency key. History helps locate the completed request, but production should add an idempotency mechanism.
 
-**Why use Gemini 2.5 Flash?** It is a configurable default suitable for a small structured text task and supported by the chosen SDK API. Availability must be verified for the candidate's key. The assessment requires Gemini; this application does not depend on the coding assistant's subscription or model.
+**Why use Gemini 3.5 Flash-Lite?** The assignment requires Gemini, and this configurable model produced working structured decisions after capacity errors on the earlier model. The final five-case evaluation passed on this configuration. This verifies the selected model for that run; it does not guarantee future availability or broad accuracy. The application does not depend on the coding assistant's subscription or model.
 
 **How did you use Codex?** “Codex helped substantially with analysis, implementation, tests, debugging, and documentation. I reviewed and ran [only the work you actually reviewed and ran]. Here is how the request flows, the tests I relied on, and a limitation I would address next.” Do not claim independent manual work you have not done.
 

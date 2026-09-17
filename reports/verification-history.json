@@ -1,0 +1,203 @@
+{
+  "record_type": "HISTORICAL_PRE_FINAL_SNAPSHOT",
+  "current_record": "verification.json",
+  "snapshot": {
+    "checked_at": "2026-09-17T16:13:20.442741+00:00",
+    "python": "3.12.14",
+    "platform": "Darwin",
+    "offline_tests": {
+      "total": 110,
+      "passed": 110,
+      "failures": 0,
+      "errors": 0,
+      "src_statement_coverage_percent": 99.01
+    },
+    "live_gemini_evaluation": {
+      "status": "PASSED",
+      "report": "reports/evaluation.json",
+      "total": 5,
+      "correct": 5,
+      "incorrect": 0,
+      "errors": 0,
+      "accuracy": 1.0,
+      "model": "gemini-2.5-flash",
+      "embedding_model": "gemini-embedding-001",
+      "timestamp": "2026-09-17T11:08:37.165608+00:00",
+      "dataset": "sample_test_cases.json",
+      "dataset_sha256": "d6f9e2f8d5e843b40699242825e5fedd7db47e8e4b19e65beee9f243f38f476a"
+    },
+    "original_pack_integrity": "All six policies, tickets.csv, sample_test_cases.json and DATA_NOTES.md match byte-for-byte.",
+    "recording": {
+      "status": "REVIEWED_CANDIDATE_CONFIRMED_READY",
+      "script": "docs/DEMO_SCRIPT.md",
+      "selected_recording": "Second recording: 2026-09-17 23:29:58",
+      "original_duration_seconds": 112.633333,
+      "selected_mp4_duration_seconds": 112.7,
+      "review_method": "Sampled frames, local automatic transcript, duration and audio-level measurements; not direct listening.",
+      "video_stream_unchanged": true,
+      "drive_upload_status": "PENDING"
+    },
+    "live_boundary_evaluation": {
+      "status": "PASSED",
+      "report": "reports/boundary-evaluation.json",
+      "total": 12,
+      "correct": 12,
+      "incorrect": 0,
+      "errors": 0,
+      "accuracy": 1.0,
+      "model": "gemini-2.5-flash",
+      "embedding_model": "gemini-embedding-001",
+      "timestamp": "2026-09-17T11:15:15.226609+00:00",
+      "dataset": "boundary_smoke_cases.json",
+      "dataset_sha256": "f60d1202bc636c16aaa6a9371d13b0c696e0c783bf86265024c7e5a0d5acaae6"
+    },
+    "index": {
+      "policies": 6,
+      "chunks": 12,
+      "policy_version": "23f5194773eefe8def3b85efb773ed2fdc01b5eda20ab61610b7fe7f15e0cc3f"
+    },
+    "browser_live_check": {
+      "status": "PASSED",
+      "actual_action": "REQUEST_PHOTOS",
+      "generated_in_streamlit": true,
+      "policy_evidence_rendered": true,
+      "saved_result_reopened_from_history": true
+    },
+    "evaluation_scope": {
+      "additional_cases_available": 40,
+      "additional_cases_executed": 12,
+      "remaining_additional_cases_not_run": 28,
+      "historical_diagnostic_run": false,
+      "limitation": "Visible smoke suites; not an estimate of unseen-ticket accuracy."
+    },
+    "subsequent_provider_status": {
+      "status": "DAILY_GENERATION_QUOTA_EXHAUSTED",
+      "http_code": 429,
+      "model": "gemini-2.5-flash",
+      "quota_id": "GenerateRequestsPerDayPerProjectPerModel-FreeTier",
+      "quota_value": 20,
+      "embedding_access": "OK",
+      "checked_at": "2026-09-17T11:23:23.789763+00:00",
+      "next_documented_daily_reset": "2026-09-18T00:00:00-07:00",
+      "handling": "Specific safe quota message; no immediate retry on HTTP 429.",
+      "historical_live_reports_preserved": true
+    },
+    "local_launch_recovery": {
+      "status": "VERIFIED",
+      "backend_http_status": 200,
+      "frontend_http_status": 200,
+      "browser_sign_in_screen_verified": true,
+      "launch_method": "Prepared Mac Terminal shortcut; keep its Terminal open.",
+      "main_model_unchanged": "gemini-2.5-flash"
+    },
+    "alternate_model_diagnostics": [
+      {
+        "report": "reports/evaluation-flash-lite.json",
+        "model": "gemini-2.5-flash-lite",
+        "total": 5,
+        "correct": 0,
+        "incorrect": 0,
+        "errors": 5,
+        "accuracy": 0.0,
+        "timestamp": "2026-09-17T14:14:20.153541+00:00",
+        "selected_as_default": false
+      },
+      {
+        "report": "reports/evaluation-gemini-3.8-flash.json",
+        "model": "gemini-3.8-flash",
+        "total": 8,
+        "correct": 2,
+        "incorrect": 0,
+        "errors": 6,
+        "accuracy": 0.25,
+        "timestamp": "2026-09-17T14:20:12.189456+00:00",
+        "selected_as_default": false
+      }
+    ],
+    "replacement_key_troubleshooting": {
+      "local_configuration_checked": true,
+      "key_file_private_mode": "0600",
+      "configured_model": "gemini-3.8-flash",
+      "backend_http_status": 200,
+      "frontend_http_status": 200,
+      "agent_gemini_requests_in_this_troubleshooting_turn": 2,
+      "provider_access_status": "HELLO_PASSED_S05_GENERATION_FAILED_HIGH_DEMAND",
+      "change": "Gemini 3.x now uses default sampling; Gemini 2.5 remains unchanged. Full decision after correction not yet tested.",
+      "checked_at": "2026-09-17T15:12:40.025088+00:00",
+      "source_default_model": "gemini-2.5-flash",
+      "last_user_reported_failure": {
+        "model": "gemini-3.8-flash",
+        "operation": "decision generation",
+        "google_http_status": 503,
+        "evidence_source": "candidate report from user-initiated attempts"
+      },
+      "agent_gemini_requests_with_replacement_key": 3,
+      "historical_live_reports_preserved": true,
+      "access_probe_report": "reports/replacement-key-access.json",
+      "offline_validation": {
+        "tests_passed": 106,
+        "ruff": "PASSED",
+        "statements_covered": 496,
+        "statements_total": 501
+      }
+    },
+    "clarification_adjustment": {
+      "status": "LIVE_S05_FAILED_GOOGLE_HIGH_DEMAND",
+      "prompt": "Explicit normal clarification outcome and customer-facing follow-up questions.",
+      "gemini_3_thinking_level": "low",
+      "exact_S05_validation_and_history_test": "PASSED_WITH_TEST_DOUBLE",
+      "offline_tests": 108,
+      "additional_agent_gemini_requests": 2,
+      "root_cause_503": "Google explicitly reported model high demand on this S05 attempt.",
+      "historical_live_reports_predate_change": true,
+      "live_diagnostic_report": "reports/missing-information-diagnostic.json"
+    },
+    "overload_error_reporting": {
+      "status": "OFFLINE_PASSED",
+      "tests_passed": 109,
+      "ruff": "PASSED",
+      "statements_covered": 499,
+      "statements_total": 504,
+      "fixes_provider_capacity": false
+    },
+    "local_model_trial": {
+      "configured_at": "2026-09-17T15:56:05.225136+00:00",
+      "model": "gemini-3.5-flash-lite",
+      "previous_local_model": "gemini-3.8-flash",
+      "status": "USER_RESULTS_OBSERVED_FORMAL_SUITE_PENDING",
+      "agent_gemini_calls": 0,
+      "backend_http_status": 200,
+      "frontend_http_status": 200,
+      "source_default_unchanged": "gemini-2.5-flash",
+      "reason": "User wants to test while Gemini 3.8 Flash reports high demand.",
+      "source_default_now": "gemini-3.5-flash-lite",
+      "manual_verification_report": "reports/manual-flash-lite-check.json"
+    },
+    "current_default_model": "gemini-3.5-flash-lite",
+    "flash_lite_default_alignment": {
+      "status": "OFFLINE_PASSED",
+      "tests_passed": 110,
+      "ruff": "PASSED",
+      "source_default": "gemini-3.5-flash-lite",
+      "example_config_model": "gemini-3.5-flash-lite",
+      "agent_gemini_requests": 0
+    },
+    "repository_preparation": {
+      "checked_at": "2026-09-17T18:16:34.036017+00:00",
+      "github_account": "Teja2000-byte",
+      "proposed_repository_name": "policy-desk",
+      "published": false,
+      "offline_tests_passed": 110,
+      "src_statements_covered": 499,
+      "src_statements_total": 504,
+      "ruff": "PASSED",
+      "git_diff_check": "PASSED",
+      "publishable_files_scanned": 60,
+      "historical_git_blobs_scanned": 82,
+      "current_secret_or_checked_pattern_matches": 0,
+      "private_runtime_files_excluded": true,
+      "current_model_evaluation": "PENDING_API_USAGE_AUTHORIZATION",
+      "gemini_requests_made": 0
+    }
+  }
+}
